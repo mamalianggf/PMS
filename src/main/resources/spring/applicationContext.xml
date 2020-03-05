@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 开启注解扫描 忽略@controller注解，防止重复注入-->
+    <context:component-scan base-package="com.pms">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!-- 数据库连接池 -->
+    <!-- 读取jdbc.properties配置文件信息 -->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClass}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!-- 相当于创建了一个用于获取SqlSession对象的SqlSessionFactory对象  -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 数据源  -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 自动扫描指定目录下的映射文件并进行注册  -->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+        <!-- 指定主配置文件的路径，此时的主配置文件中主要就是一些框架参数或者是一些自定义的别名  -->
+        <property name="configLocation" value="classpath:SqlMapConfig.xml"/>
+    </bean>
+    <!-- 统一对MyBatis中的Mapper进行管理 -->
+    <!--通过MapperScannerConfigurer可以自动扫描指定包下的Mapper接口并动态生成其实现类 -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!-- 要扫描的Mapper接口所在的包 -->
+        <property name="basePackage" value="com.pms.mapper"/>
+    </bean>
+
+
+</beans>
