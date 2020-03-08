@@ -4,11 +4,11 @@ layui.use(['form', 'jquery'], function () {
     //提交
     form.on('submit(loginForm)', function (obj) {
         $.ajax({
-            url: "login",
+            url: "authentication",
             type: "POST",
             data: obj.field,
-            success: function () {
-
+            success: function (data) {
+                console.log(data);
             }
         });
         return false;
