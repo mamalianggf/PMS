@@ -23,7 +23,7 @@ public class LoginController {
     private UserService userService;
 
     @RequestMapping(value = "login", method = RequestMethod.GET)
-    public ModelAndView loginJSP() {
+    public ModelAndView login() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         return modelAndView;
@@ -31,8 +31,11 @@ public class LoginController {
 
     @RequestMapping(value = "authentication", method = RequestMethod.POST)
     @ResponseBody
-    public EiInfo login(HttpServletRequest request, HttpServletResponse response,String username, String password) throws Exception {
+    public EiInfo authentication(HttpServletRequest request, HttpServletResponse response,String username, String password) throws Exception {
+        //校验密码
         int authentication = userService.authentication(username, password);
+        //todo 查询角色
+        //todo 查询对应的权限集合
         EiInfo eiInfo = new EiInfo();
         if (authentication > 0) {
             eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
