@@ -46,12 +46,12 @@
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;">业主反馈</a>
                     <dl class="layui-nav-child">
-                        <dd><a id="opinion_submit" href="javascript:;">意见反馈</a></dd>
-                        <dd><a href="javascript:;">意见查阅</a></dd>
+                        <dd><a id="opinion_submit" href="/PMS/opinion/submit" target="iframeMain">意见反馈</a></dd>
+                        <dd><a id="opinion_check" href="javascript:;">意见查阅</a></dd>
                         <dd><a href="javascript:;">意见检索</a></dd>
                     </dl>
                 </li>
@@ -99,7 +99,7 @@
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <div style="padding: 15px;">内容主体区域</div>
+        <iframe id="iframeMain" src="/PMS/opinion/submit"></iframe>
     </div>
 
     <div class="layui-footer">

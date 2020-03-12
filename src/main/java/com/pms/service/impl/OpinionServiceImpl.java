@@ -6,6 +6,8 @@ import com.pms.service.OpinionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OpinionServiceImpl implements OpinionService {
 
@@ -14,5 +16,10 @@ public class OpinionServiceImpl implements OpinionService {
 
     public int insertOpinion(Opinion opinion) throws Exception {
         return opinionMapper.insertOpinion(opinion);
+    }
+
+    @Override
+    public List<Opinion> listOpinion(Opinion opinion) throws Exception {
+        return opinionMapper.listOpinion(opinion);
     }
 }

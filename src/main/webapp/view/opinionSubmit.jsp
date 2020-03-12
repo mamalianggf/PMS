@@ -1,7 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
 <% String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";%>
-<link rel="stylesheet" href="<%=basePath%>css/opinionSubmit.css" media="all">
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>PMS</title>
+    <!-- 该资源在IDE环境中无法找到，是因为视图解析器的原因 -->
+    <link rel="stylesheet" href="<%=basePath%>layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="<%=basePath%>css/opinionSubmit.css" media="all">
+</head>
+<body class="layui-layout-body">
 <div id="opinion_form">
     <form class="layui-form" action="">
         <div class="layui-form-item">
@@ -26,5 +35,8 @@
         </div>
     </form>
 </div>
+</body>
+<script src="<%=basePath%>layui/layui.js"></script>
 <script src="<%=basePath%>js/opinionSubmit.js"></script>
+</html>
 

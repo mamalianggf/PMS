@@ -26,4 +26,11 @@ public class IndexController {
         modelAndView.setViewName("opinionSubmit");
         return modelAndView;
     }
+
+    @RequestMapping(value = "/opinion/check", method = RequestMethod.GET)
+    public ModelAndView opinionCheck() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("opinionCheck");
+        return modelAndView;
+    }
 }
