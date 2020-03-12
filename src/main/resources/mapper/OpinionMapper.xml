@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.mapper.OpinionMapper">
+
+    <insert id="insertOpinion" parameterType="Opinion">
+        insert into opinion (intro, details, creator_id, create_time)
+        values (#{intro}, #{details}, #{creatorId}, #{createTime})
+    </insert>
+
+</mapper>
