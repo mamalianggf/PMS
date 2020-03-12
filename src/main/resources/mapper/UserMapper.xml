@@ -3,8 +3,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pms.mapper.UserMapper">
 
-    <select id="authentication" resultType="int" >
-        select count(1) from user where NAME=#{name} and PWD = #{pwd}
+    <select id="authentication" resultType="com.pms.entity.User">
+        select id, name, pwd
+        from user
+        where NAME = #{name}
+          and PWD = #{pwd}
     </select>
 
+    <select id="getRole" resultType="com.pms.entity.Role">
+        select role.ID, role.NAME
+        from role,
+             user,
+             user_role
+        where role.ID = user_role.ROLE_ID
+          and user.id = user_role.USER_ID
+          and user_role.USER_ID = #{userId}
+    </select>
 </mapper>
