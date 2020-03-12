@@ -54,4 +54,14 @@ public class LoginController {
         }
         return eiInfo;
     }
+
+    @RequestMapping(value = "exit", method = RequestMethod.GET)
+    public ModelAndView exit(HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        session.removeAttribute("user");
+        session.removeAttribute("role");
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
 }

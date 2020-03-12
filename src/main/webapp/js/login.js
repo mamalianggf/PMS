@@ -8,7 +8,11 @@ layui.use(['form', 'jquery'], function () {
             type: "POST",
             data: obj.field,
             success: function (data) {
-                console.log(data);
+                if ("200" == data.status) {
+                    window.location.href = "/PMS/index"
+                } else {
+                    layer.msg(data.message,{offset: '100px'});
+                }
             }
         });
         return false;

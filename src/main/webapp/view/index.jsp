@@ -31,17 +31,15 @@
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <!-- todo role集合 -->
-                    role
-                    <!-- todo 用户名 -->
-                    贤心
+                    ${sessionScope.role.name}
+                    ${sessionScope.user.name}
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
                     <dd><a href="">安全设置</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item"><a href="">注销</a></li>
+            <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/exit">注销</a></li>
         </ul>
     </div>
 
@@ -52,7 +50,7 @@
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;">业主反馈</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">意见反馈</a></dd>
+                        <dd><a id="opinion_submit" href="javascript:;">意见反馈</a></dd>
                         <dd><a href="javascript:;">意见查阅</a></dd>
                         <dd><a href="javascript:;">意见检索</a></dd>
                     </dl>
