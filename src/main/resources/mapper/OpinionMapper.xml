@@ -3,34 +3,60 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pms.mapper.OpinionMapper">
 
+    <resultMap type="opinion" id="opinionMap">
+        <id property="id" column="id"/>
+        <result property="intro" column="intro"/>
+        <result property="details" column="details"/>
+        <result property="creatorId" column="creator_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
 
     <insert id="insertOpinion" parameterType="Opinion">
-        insert into opinion (intro, details, creator_id, create_time)
-        values (#{intro}, #{details}, #{creatorId}, #{createTime})
+        insert into opinion (intro, details, creator_id, create_time, STATUS)
+        values (#{intro}, #{details}, #{creatorId}, #{createTime}, #{status})
     </insert>
 
-    <select id="listOpinion" parameterType="Opinion" resultType="Opinion">
-        select id, intro, details, creator_id, create_time, status from opinion
+    <select id="count" resultType="int">
+        select count(1) from opinion
         where 1=1
-        <if test="id != null and id != ''">
-            id = #{id}
+        <if test="intro!=null and intro!=''">
+            AND INTRO like '%${intro}%'
         </if>
-        <if test="intro != null and intro != ''">
-            intro = #{intro}
+        <if test="status!=null and status!=''">
+            AND STATUS = #{status}
         </if>
-        <if test="details != null and details != ''">
-            details = #{details}
+    </select>
+
+    <select id="listOpinion" parameterType="HashMap" resultType="HashMap">
+        select opinion.id, intro, details,name, creator_id as creatorId, create_time as createTime, status
+        from opinion,user
+        where 1=1 and user.id = opinion.CREATOR_ID
+        <if test="intro!=null and intro!=''">
+            AND INTRO like '%${intro}%'
         </if>
-        <if test="creatorId != null and creatorId != ''">
-            creator_id = #{creatorId}
-        </if>
-        <if test="createTime != null and createTime != ''">
-            create_time = #{createTime}
-        </if>
-        <if test="status != null and status != ''">
-            status = #{status}
+        <if test="status!=null and status!=''">
+            AND STATUS = #{status}
         </if>
         order by create_time desc
+        limit ${start},${limit}
     </select>
+
+    <delete id="deleteOpinion" parameterType="String">
+        delete from opinion
+        WHERE ID in
+        <foreach collection="array" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateOpinion" parameterType="HashMap">
+        update opinion
+        set INTRO   = #{intro},
+            DETAILS = #{details}
+        where ID = #{id}
+    </update>
+
 
 </mapper>

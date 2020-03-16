@@ -2,6 +2,7 @@ package com.pms.controller;
 
 import com.sun.deploy.net.HttpResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,10 +21,27 @@ public class IndexController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "note", method = RequestMethod.GET)
+    public ModelAndView note(HttpServletRequest request) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("note");
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/opinion/submit", method = RequestMethod.GET)
-    public ModelAndView opinionSubmit() {
+    public ModelAndView opinionSubmit(HttpServletRequest request, String method, String id, String intro, String details) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("opinionSubmit");
+        modelAndView.addObject("method", method);
+        if (!StringUtils.isEmpty(id)) {
+            modelAndView.addObject("id", id);
+        }
+        if (!StringUtils.isEmpty(intro)) {
+            modelAndView.addObject("intro", intro);
+        }
+        if (!StringUtils.isEmpty(details)) {
+            modelAndView.addObject("details", details);
+        }
         return modelAndView;
     }
 

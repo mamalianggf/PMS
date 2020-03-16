@@ -1,23 +1,74 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
 <% String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";%>
-<table class="layui-hide" id="opinion" lay-filter="test"></table>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>PMS</title>
+    <!-- 该资源在IDE环境中无法找到，是因为视图解析器的原因 -->
+    <link rel="stylesheet" href="<%=basePath%>layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="<%=basePath%>css/opinionCheck.css" media="all">
+</head>
+<body>
+<div id="container">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12">
+            &nbsp;简介:
+            <div class="layui-input-inline">
+                <input type="text" name="intro"
+                       placeholder="请输入简介" autocomplete="off" class="layui-input">
+            </div>
+            &nbsp;状态
+            <div class="layui-input-inline">
+                <select name="status">
+                    <option value="">---请选择---</option>
+                    <option value="0">未处理</option>
+                    <option value="1">处理中</option>
+                    <option value="2">已处理</option>
+                </select>
+            </div>
+            &nbsp;
+            <button class="layui-btn" lay-submit lay-filter="opinionSearch">
+                <i class="layui-icon">&#xe615;</i>
+            </button>
+        </form>
+    </div>
+    <table class="layui-hide" id="opinion" lay-filter="test"></table>
 
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="add">新增</button>
+            <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
+        </div>
+    </script>
 
-<div class="layui-tab layui-tab-brief" lay-filter="demo">
-    <div class="layui-tab-content">
-        <div class="layui-tab-item">
-            <div id="pageDemo"></div>
+    <script type="text/html" id="barDemo">
+        <%--<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>--%>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>
+
+    <script type="text/html" id="titleTpl">
+        {{#  if(d.status == 0){ }}
+        未处理
+        {{#  } else if(d.status == 1) { }}
+        处理中
+        {{#  } else{ }}
+        已处理
+        {{#  } }}
+    </script>
+
+    <div class="layui-tab layui-tab-brief" lay-filter="demo">
+        <div class="layui-tab-content">
+            <div class="layui-tab-item">
+                <div id="pageDemo"></div>
+            </div>
         </div>
     </div>
+    <script src="<%=basePath%>layui/layui.js"></script>
+    <script src="<%=basePath%>js/opinionCheck.js"></script>
 </div>
-<script src="<%=basePath%>layui/layui.js"></script>
-<script src="<%=basePath%>js/opinionCheck.js"></script>
-
+</body>
 
 

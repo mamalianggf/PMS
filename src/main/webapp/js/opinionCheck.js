@@ -2,15 +2,16 @@ layui.config({
     version: '1583393622887' //为了更新 js 缓存，可忽略
 });
 
-layui.use(['laypage', 'layer', 'table'], function () {
+layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
     let laypage = layui.laypage //分页
         , layer = layui.layer //弹层
         , table = layui.table //表格
+        , form = layui.form //表单
+        , $ = layui.$;
 
     //执行一个 table 实例
-    table.render({
+    let opinionTable = table.render({
         elem: '#opinion'
-        , height: 420
         , method: "POST"
         , url: '/PMS/opinion/select' //数据接口
         , parseData: function (res) { //res 即为原始返回的数据
@@ -26,19 +27,16 @@ layui.use(['laypage', 'layer', 'table'], function () {
         }
         , title: '业主反馈表'
         , page: true //开启分页
-        , toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+        , toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
-            , {field: 'id', title: 'ID', width: 80, fixed: 'left'}
-            , {field: 'username', title: '用户名', width: 80}
-            , {field: 'experience', title: '积分', width: 90, sort: true, totalRow: true}
-            , {field: 'sex', title: '性别', width: 80, sort: true}
-            , {field: 'score', title: '评分', width: 80, sort: true, totalRow: true}
-            , {field: 'city', title: '城市', width: 150}
-            , {field: 'sign', title: '签名', width: 200}
-            , {field: 'classify', title: '职业', width: 100}
-            , {field: 'wealth', title: '财富', width: 135, sort: true, totalRow: true}
-            , {fixed: 'right', width: 165, align: 'center', toolbar: '#barDemo'}
+            , {field: 'id', title: 'ID', fixed: 'left'}
+            , {field: 'intro', title: '简介'}
+            , {field: 'details', title: '详情'}
+            , {field: 'creatorId', title: '创建人ID'}
+            , {field: 'createTime', title: '创建人时间'}
+            , {field: 'status', title: '状态', templet: '#titleTpl'}
+            , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
         ]]
     });
 
@@ -48,22 +46,34 @@ layui.use(['laypage', 'layer', 'table'], function () {
             , data = checkStatus.data; //获取选中的数据
         switch (obj.event) {
             case 'add':
-                layer.msg('添加');
-                break;
-            case 'update':
-                if (data.length === 0) {
-                    layer.msg('请选择一行');
-                } else if (data.length > 1) {
-                    layer.msg('只能同时编辑一个');
-                } else {
-                    layer.alert('编辑 [id]：' + checkStatus.data[0].id);
-                }
+                layer.open({
+                    type: 2,
+                    area: ['500px', '300px'],
+                    content: ['/PMS/opinion/submit?method=add', 'no'],
+                    end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
+                        opinionTable.reload({});
+                    }
+                });
                 break;
             case 'delete':
                 if (data.length === 0) {
                     layer.msg('请选择一行');
                 } else {
-                    layer.msg('删除');
+                    let arr = [];
+                    for (let i = 0; i < data.length; i++) {
+                        arr.push(data[i].id);
+                    }
+                    $.ajax({
+                        url: "/PMS/opinion/delete",
+                        type: "POST",
+                        data: {
+                            opinionIds: arr
+                        },
+                        success: function (data) {
+                            layer.msg(data.message);
+                            opinionTable.reload({});
+                        }
+                    });
                 }
                 break;
         }
@@ -81,12 +91,33 @@ layui.use(['laypage', 'layer', 'table'], function () {
                 obj.del(); //删除对应行（tr）的DOM结构
                 layer.close(index);
                 //向服务端发送删除指令
+                let arr = [obj.data.id];
+                $.ajax({
+                    url: "/PMS/opinion/delete",
+                    type: "POST",
+                    data: {
+                        opinionIds: arr
+                    },
+                    success: function (data) {
+                        layer.msg(data.message);
+                        opinionTable.reload({});
+                    }
+                });
             });
         } else if (layEvent === 'edit') {
-            layer.msg('编辑操作');
+            let id = obj.data.id;
+            let intro = obj.data.intro;
+            let details = obj.data.details;
+            layer.open({
+                type: 2,
+                area: ['500px', '300px'],
+                content: ['/PMS/opinion/submit?method=update&id=' + id + '&intro=' + intro + '&details=' + details, 'no'],
+                end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
+                    opinionTable.reload({});
+                }
+            });
         }
     });
-
 
     //分页
     laypage.render({
@@ -99,6 +130,21 @@ layui.use(['laypage', 'layer', 'table'], function () {
                 layer.msg('第' + obj.curr + '页', {offset: 'b'});
             }
         }
+    });
+
+    form.on('submit(opinionSearch)', function (data) {
+        let formData = data.field;
+        let intro = formData.intro,
+            status = formData.status;
+        opinionTable.reload({
+            where: {
+                intro: intro,
+                status: status
+            },
+            method: 'post',
+            url: '/PMS/opinion/select',
+        });
+        return false;
     });
 
 

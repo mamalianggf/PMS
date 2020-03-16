@@ -50,9 +50,8 @@
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;">业主反馈</a>
                     <dl class="layui-nav-child">
-                        <dd><a id="opinion_submit" href="/PMS/opinion/submit" target="iframeMain">意见反馈</a></dd>
-                        <dd><a id="opinion_check" href="javascript:;">意见查阅</a></dd>
-                        <dd><a href="javascript:;">意见检索</a></dd>
+                        <dd><a href="/PMS/opinion/submit?method=add" target="iframeName">意见反馈</a></dd>
+                        <dd><a href="/PMS/opinion/check" target="iframeName">意见查阅</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -99,7 +98,7 @@
 
     <div class="layui-body">
         <!-- 内容主体区域 -->
-        <iframe id="iframeMain" src="/PMS/opinion/submit"></iframe>
+        <iframe id="iframeMain" name="iframeName" src="/PMS/note"></iframe>
     </div>
 
     <div class="layui-footer">
