@@ -34,18 +34,23 @@ public class LoginController {
 
     @RequestMapping(value = "authentication", method = RequestMethod.POST)
     @ResponseBody
-    public EiInfo authentication(HttpServletRequest request, HttpServletResponse response,String username, String password) throws Exception {
+    public EiInfo authentication(HttpServletRequest request, HttpServletResponse response, String username, String password) throws Exception {
         //校验密码
-        User user = userService.authentication(username, password);
+        User user = userService.authentication(username);
         //todo 查询对应的权限集合
 
         EiInfo eiInfo = new EiInfo();
-        if (user != null ) {
+        if (user == null) {
+            eiInfo.setStatus(HttpConstant.HTTP_CODE_405);
+            eiInfo.setMessage("账号或者密码错误");
+            return eiInfo;
+        }
+        if (user.getPwd().equals(password)) {
             // 查询角色
             Role role = userService.getRole(user.getId());
             HttpSession session = request.getSession();
-            session.setAttribute("user",user);
-            session.setAttribute("role",role);
+            session.setAttribute("user", user);
+            session.setAttribute("role", role);
             eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
             eiInfo.setMessage("登录成功");
         } else {

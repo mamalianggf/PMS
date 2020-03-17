@@ -58,8 +58,6 @@
                     <a href="javascript:;">住户管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">住户登记</a></dd>
-                        <dd><a href="javascript:;">信息修改</a></dd>
-                        <dd><a href="javascript:;">住户查询</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -81,15 +79,13 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">收缴费管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">进行缴费</a></dd>
-                        <dd><a href="javascript:;">缴费查询</a></dd>
-                        <dd><a href="javascript:;">维修记录</a></dd>
+                        <dd><a href="/PMS/pay" target="iframeName">缴费查询</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">系统管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">用户管理</a></dd>
+                        <dd><a href="/PMS/user" target="iframeName">用户管理</a></dd>
                     </dl>
                 </li>
             </ul>

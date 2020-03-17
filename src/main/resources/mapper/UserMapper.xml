@@ -4,10 +4,9 @@
 <mapper namespace="com.pms.mapper.UserMapper">
 
     <select id="authentication" resultType="com.pms.entity.User">
-        select id, name, pwd
+        select id, name, pwd, phone, address, rname, CREATE_TIME as createTime
         from user
         where NAME = #{name}
-          and PWD = #{pwd}
     </select>
 
     <select id="getRole" resultType="com.pms.entity.Role">
@@ -19,4 +18,76 @@
           and user.id = user_role.USER_ID
           and user_role.USER_ID = #{userId}
     </select>
+
+    <select id="count" resultType="int">
+        select count(1) from user a,user_role b,role c
+        where a.id = b.USER_ID and c.ID = b.ROLE_ID
+        <if test="name!=null and name!=''">
+            AND a.name like '%${name}%'
+        </if>
+        <if test="rname!=null and rname!=''">
+            AND a.rname like '%${rname}%'
+        </if>
+        <if test="roleId!=null and roleId!=''">
+            AND c.ID = #{roleId}
+        </if>
+    </select>
+
+    <select id="listUser" parameterType="HashMap" resultType="HashMap">
+        select a.ID as id,
+        a.name as name,
+        a.PWD as pwd,
+        a.phone as phone,
+        a.ADDRESS as address,
+        a.RNAME as rname,
+        a.CREATE_TIME as createTime,
+        c.ID as roleId,
+        c.NAME as roleName
+        from user a,user_role b,role c
+        where a.id = b.USER_ID and c.ID = b.ROLE_ID
+        <if test="name!=null and name!=''">
+            AND a.name like '%${name}%'
+        </if>
+        <if test="rname!=null and rname!=''">
+            AND a.rname like '%${rname}%'
+        </if>
+        <if test="roleId!=null and roleId!=''">
+            AND c.ID = #{roleId}
+        </if>
+        order by a.ID
+        limit ${start},${limit}
+    </select>
+
+    <insert id="insertUser" parameterType="User">
+        insert into user (name, pwd, PHONE, ADDRESS, RNAME, CREATE_TIME)
+        values (#{name}, #{pwd}, #{phone}, #{address}, #{rname}, #{createTime})
+    </insert>
+
+    <insert id="insertUser_role">
+        insert into user_role (user_id, role_id)
+        values (#{userId}, #{roleId})
+    </insert>
+
+    <update id="updateUser" parameterType="HashMap">
+        update user
+        set pwd     = #{pwd},
+            PHONE   = #{phone},
+            ADDRESS = #{address},
+            RNAME   = #{rname}
+        where ID = #{id}
+    </update>
+
+    <update id="updateUser_role" parameterType="HashMap">
+        update user_role
+        set ROLE_ID = #{roleId}
+        where USER_ID = #{userId}
+    </update>
+
+    <delete id="deleteUser" parameterType="String">
+        delete from user
+        WHERE ID in
+        <foreach collection="array" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>

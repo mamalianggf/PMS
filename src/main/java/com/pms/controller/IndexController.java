@@ -51,4 +51,40 @@ public class IndexController {
         modelAndView.setViewName("opinionCheck");
         return modelAndView;
     }
+
+    @RequestMapping(value = "user",method = RequestMethod.GET)
+    public ModelAndView user() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("user");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/user/submit", method = RequestMethod.GET)
+    public ModelAndView userSubmit(HttpServletRequest request, String method, String id, String pwd,String name, String phone, String address, String rname,String roleId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("userSubmit");
+        modelAndView.addObject("method", method);
+        if (!StringUtils.isEmpty(id)) {
+            modelAndView.addObject("id", id);
+        }
+        if (!StringUtils.isEmpty(name)) {
+            modelAndView.addObject("name", name);
+        }
+        if (!StringUtils.isEmpty(pwd)) {
+            modelAndView.addObject("pwd", pwd);
+        }
+        if (!StringUtils.isEmpty(phone)) {
+            modelAndView.addObject("phone", phone);
+        }
+        if (!StringUtils.isEmpty(address)) {
+            modelAndView.addObject("address", address);
+        }
+        if (!StringUtils.isEmpty(rname)) {
+            modelAndView.addObject("rname", rname);
+        }
+        if (!StringUtils.isEmpty(roleId)) {
+            modelAndView.addObject("roleId", roleId);
+        }
+        return modelAndView;
+    }
 }

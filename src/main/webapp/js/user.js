@@ -10,10 +10,10 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
         , $ = layui.$;
 
     //执行一个 table 实例
-    let opinionTable = table.render({
-        elem: '#opinion'
+    let userTable = table.render({
+        elem: '#user'
         , method: "POST"
-        , url: '/PMS/opinion/select' //数据接口
+        , url: '/PMS/user/select' //数据接口
         , parseData: function (res) { //res 即为原始返回的数据
             if ("200" == res.status) {
                 res.status = 0;
@@ -25,18 +25,19 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
                 "data": res.data //解析数据列表
             };
         }
-        , title: '业主反馈表'
+        , title: '用户表'
         , page: true //开启分页
         , toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
             , {field: 'id', title: 'ID', fixed: 'left'}
-            , {field: 'intro', title: '简介'}
-            , {field: 'details', title: '详情'}
-            , {field: 'name', title: '创建人账号'}
-            , {field: 'rname', title: '创建人姓名'}
-            , {field: 'createTime', title: '创建人时间'}
-            , {field: 'status', title: '状态', templet: '#titleTpl'}
+            , {field: 'name', title: '账号'}
+            , {field: 'pwd', title: '密码', hide: true}
+            , {field: 'phone', title: '电话'}
+            , {field: 'address', title: '住址'}
+            , {field: 'rname', title: '姓名'}
+            , {field: 'roleId', title: '角色Id', hide: true}
+            , {field: 'roleName', title: '角色'}
             , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
         ]]
     });
@@ -49,10 +50,10 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
             case 'add':
                 layer.open({
                     type: 2,
-                    area: ['500px', '300px'],
-                    content: ['/PMS/opinion/submit?method=add', 'no'],
+                    area: ['500px', '500px'],
+                    content: ['/PMS/user/submit?method=add', 'no'],
                     end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
-                        opinionTable.reload({});
+                        userTable.reload({});
                     }
                 });
                 break;
@@ -65,14 +66,14 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
                         arr.push(data[i].id);
                     }
                     $.ajax({
-                        url: "/PMS/opinion/delete",
+                        url: "/PMS/user/delete",
                         type: "POST",
                         data: {
-                            opinionIds: arr
+                            userIds: arr
                         },
                         success: function (data) {
                             layer.msg(data.message);
-                            opinionTable.reload({});
+                            userTable.reload({});
                         }
                     });
                 }
@@ -85,36 +86,38 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
     table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
             , layEvent = obj.event; //获得 lay-event 对应的值
-        if (layEvent === 'detail') {
-            layer.msg('查看操作');
-        } else if (layEvent === 'del') {
+        if (layEvent === 'del') {
             layer.confirm('真的删除行么', function (index) {
                 obj.del(); //删除对应行（tr）的DOM结构
                 layer.close(index);
                 //向服务端发送删除指令
                 let arr = [obj.data.id];
                 $.ajax({
-                    url: "/PMS/opinion/delete",
+                    url: "/PMS/user/delete",
                     type: "POST",
                     data: {
-                        opinionIds: arr
+                        userIds: arr
                     },
                     success: function (data) {
                         layer.msg(data.message);
-                        opinionTable.reload({});
+                        userTable.reload({});
                     }
                 });
             });
         } else if (layEvent === 'edit') {
             let id = obj.data.id;
-            let intro = obj.data.intro;
-            let details = obj.data.details;
+            let name = obj.data.name;
+            let pwd = obj.data.pwd;
+            let phone = obj.data.phone;
+            let address = obj.data.address;
+            let rname = obj.data.rname;
+            let roleId = obj.data.roleId;
             layer.open({
                 type: 2,
-                area: ['500px', '300px'],
-                content: ['/PMS/opinion/submit?method=update&id=' + id + '&intro=' + intro + '&details=' + details, 'no'],
+                area: ['500px', '500px'],
+                content: ['/PMS/user/submit?method=update&id=' + id + '&name=' + name + '&pwd=' + pwd + '&phone=' + phone + '&address=' + address + '&rname=' + rname + '&roleId=' + roleId, 'no'],
                 end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
-                    opinionTable.reload({});
+                    userTable.reload({});
                 }
             });
         }
@@ -133,17 +136,19 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
         }
     });
 
-    form.on('submit(opinionSearch)', function (data) {
+    form.on('submit(userSearch)', function (data) {
         let formData = data.field;
-        let intro = formData.intro,
-            status = formData.status;
-        opinionTable.reload({
+        let name = formData.name,
+            rname = formData.rname,
+            roleId = formData.roleId
+        userTable.reload({
             where: {
-                intro: intro,
-                status: status
+                name: name,
+                rname: rname,
+                roleId: roleId
             },
             method: 'post',
-            url: '/PMS/opinion/select',
+            url: '/PMS/user/select',
         });
         return false;
     });

@@ -30,16 +30,23 @@
     </select>
 
     <select id="listOpinion" parameterType="HashMap" resultType="HashMap">
-        select opinion.id, intro, details,name, creator_id as creatorId, create_time as createTime, status
-        from opinion,user
-        where 1=1 and user.id = opinion.CREATOR_ID
+        select a.id as id,
+        a.intro as intro,
+        a.details as details,
+        a.creator_id as creatorId,
+        a.create_time as createTime,
+        a.status as status,
+        b.name as name,
+        b.RNAME as rname
+        from opinion a,user b
+        where 1=1 and a.CREATOR_ID = b.id
         <if test="intro!=null and intro!=''">
-            AND INTRO like '%${intro}%'
+            AND a.INTRO like '%${intro}%'
         </if>
         <if test="status!=null and status!=''">
-            AND STATUS = #{status}
+            AND a.STATUS = #{status}
         </if>
-        order by create_time desc
+        order by a.create_time desc
         limit ${start},${limit}
     </select>
 

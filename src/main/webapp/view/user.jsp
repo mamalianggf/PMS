@@ -8,33 +8,40 @@
     <title>PMS</title>
     <!-- 该资源在IDE环境中无法找到，是因为视图解析器的原因 -->
     <link rel="stylesheet" href="<%=basePath%>layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="<%=basePath%>css/opinionCheck.css" media="all">
+    <link rel="stylesheet" href="<%=basePath%>css/user.css" media="all">
 </head>
 <body>
 <div id="container">
     <div class="layui-row">
         <form class="layui-form layui-col-md12">
-            &nbsp;简介:
+            &nbsp;&nbsp;账号:
             <div class="layui-input-inline">
-                <input type="text" name="intro"
-                       placeholder="请输入简介" autocomplete="off" class="layui-input">
+                <input type="text" name="name"
+                       placeholder="请输入账号" autocomplete="off" class="layui-input">
             </div>
-            &nbsp;&nbsp;状态:
+            &nbsp;姓名:
             <div class="layui-input-inline">
-                <select name="status">
+                <input type="text" name="rname"
+                       placeholder="请输入姓名" autocomplete="off" class="layui-input">
+            </div>
+            &nbsp;&nbsp;角色:
+            <div class="layui-input-inline">
+                <select name="roleId">
                     <option value="">---请选择---</option>
-                    <option value="0">未处理</option>
-                    <option value="1">处理中</option>
-                    <option value="2">已处理</option>
+                    <option value="1">保安</option>
+                    <option value="2">业主</option>
+                    <option value="3">维修人员</option>
+                    <option value="4">软件管理人员</option>
+                    <option value="5">物业管理人员</option>
                 </select>
             </div>
             &nbsp;
-            <button class="layui-btn" lay-submit lay-filter="opinionSearch">
+            <button class="layui-btn" lay-submit lay-filter="userSearch">
                 <i class="layui-icon">&#xe615;</i>
             </button>
         </form>
     </div>
-    <table class="layui-hide" id="opinion" lay-filter="test"></table>
+    <table class="layui-hide" id="user" lay-filter="test"></table>
 
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
@@ -49,16 +56,6 @@
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 
-    <script type="text/html" id="titleTpl">
-        {{#  if(d.status == 0){ }}
-        未处理
-        {{#  } else if(d.status == 1) { }}
-        处理中
-        {{#  } else{ }}
-        已处理
-        {{#  } }}
-    </script>
-
     <div class="layui-tab layui-tab-brief" lay-filter="demo">
         <div class="layui-tab-content">
             <div class="layui-tab-item">
@@ -67,7 +64,7 @@
         </div>
     </div>
     <script src="<%=basePath%>layui/layui.js"></script>
-    <script src="<%=basePath%>js/opinionCheck.js"></script>
+    <script src="<%=basePath%>js/user.js"></script>
 </div>
 </body>
 
