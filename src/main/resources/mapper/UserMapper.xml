@@ -55,7 +55,9 @@
             AND c.ID = #{roleId}
         </if>
         order by a.ID
-        limit ${start},${limit}
+        <if test="start!=null and start!='' and limit!=null and limit!=''">
+            limit ${start},${limit}
+        </if>
     </select>
 
     <insert id="insertUser" parameterType="User">
