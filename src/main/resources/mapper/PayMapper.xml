@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.mapper.PayMapper">
+
+    <insert id="insertPay" parameterType="Pay">
+        insert into pay (text_money, value_money, tax, comment, payer_id, payee_id, create_time)
+        values (#{textMoney}, #{valueMoney}, #{tax}, #{comment}, #{payerId}, #{payeeId}, #{createTime})
+    </insert>
+
+    <select id="count" resultType="int">
+        select count(1) from pay a,user b,user c
+        where a.PAYER_ID = b.ID and a.PAYEE_ID = c.ID
+        <if test="payerRname!=null and payerRname!=''">
+            AND b.RNAME like '%${payerRname}%'
+        </if>
+        <if test="payeeRname!=null and payeeRname!=''">
+            AND c.RNAME = #{payeeRname}
+        </if>
+    </select>
+
+    <select id="listPay" parameterType="HashMap" resultType="HashMap">
+        select a.id as id,
+        a.TEXT_MONEY as textMoney,
+        a.VALUE_MONEY as valueMoney,
+        a.TAX as tax,
+        a.COMMENT as comment,
+        a.CREATE_TIME as createTime,
+        a.PAYER_ID as payerId,
+        a.PAYEE_ID as payeeId,
+        b.name as payerName,
+        c.NAME as payeeName
+        from pay a,user b,user c
+        where 1=1 and a.PAYER_ID = b.ID and a.PAYEE_ID = c.ID
+        <if test="payerRname!=null and payerRname!=''">
+            AND b.RNAME like '%${payerRname}%'
+        </if>
+        <if test="payeeRname!=null and payeeRname!=''">
+            AND c.RNAME like '%${payeeRname}%'
+        </if>
+        order by a.create_time desc
+        limit ${start},${limit}
+    </select>
+
+    <delete id="deletePay" parameterType="String">
+        delete from pay
+        WHERE ID in
+        <foreach collection="array" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updatePay" parameterType="HashMap">
+        update pay
+        set TEXT_MONEY  = #{textMoney},
+            VALUE_MONEY = #{valueMoney},
+            TAX=#{tax},
+            COMMENT=#{comment}
+        where ID = #{id}
+    </update>
+
+
+</mapper>
