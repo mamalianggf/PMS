@@ -45,6 +45,9 @@
         c.NAME as roleName
         from user a,user_role b,role c
         where a.id = b.USER_ID and c.ID = b.ROLE_ID
+        <if test="id!=null and id!=''">
+            AND a.ID =#{id}
+        </if>
         <if test="name!=null and name!=''">
             AND a.name like '%${name}%'
         </if>

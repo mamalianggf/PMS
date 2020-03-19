@@ -51,7 +51,7 @@
                     <a class="" href="javascript:;">业主反馈</a>
                     <dl class="layui-nav-child">
                         <dd><a href="/PMS/opinion/submit?method=add" target="iframeName">意见反馈</a></dd>
-                        <dd><a href="/PMS/opinion/check" target="iframeName">意见查阅</a></dd>
+                        <dd><a href="/PMS/opinion" target="iframeName">意见查阅</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
@@ -77,15 +77,15 @@
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">收缴费管理</a>
+                    <a href="javascript:;">缴费管理</a>
                     <dl class="layui-nav-child">
                         <dd><a href="/PMS/pay" target="iframeName">缴费查询</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="javascript:;">系统管理</a>
+                    <a href="javascript:;">住户管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="/PMS/user" target="iframeName">用户管理</a></dd>
+                        <dd><a href="/PMS/user" target="iframeName">住户查询</a></dd>
                     </dl>
                 </li>
             </ul>

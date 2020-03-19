@@ -35,6 +35,7 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
             , {field: 'pwd', title: '密码', hide: true}
             , {field: 'phone', title: '电话'}
             , {field: 'address', title: '住址'}
+            , {field: 'createTime', title: '入住时间'}
             , {field: 'rname', title: '姓名'}
             , {field: 'roleId', title: '角色Id', hide: true}
             , {field: 'roleName', title: '角色'}

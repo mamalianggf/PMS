@@ -32,6 +32,9 @@
         c.NAME as payeeName
         from pay a,user b,user c
         where 1=1 and a.PAYER_ID = b.ID and a.PAYEE_ID = c.ID
+        <if test="id!=null and id!=''">
+            AND a.ID =#{id}
+        </if>
         <if test="payerRname!=null and payerRname!=''">
             AND b.RNAME like '%${payerRname}%'
         </if>
@@ -39,7 +42,9 @@
             AND c.RNAME like '%${payeeRname}%'
         </if>
         order by a.create_time desc
-        limit ${start},${limit}
+        <if test="start!=null and start!='' and limit!=null and limit!=''">
+            limit ${start},${limit}
+        </if>
     </select>
 
     <delete id="deletePay" parameterType="String">

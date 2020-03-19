@@ -15,35 +15,35 @@
 
 <form id="pay_form" class="layui-form" action="">
     <c:if test="${method =='update'}">
-        <input type="text" name="id" value="${id}" style="display: none">
+        <input type="text" name="id" value="${pay.id}" style="display: none">
     </c:if>
 
     <div class="layui-form-item">
         <label class="layui-form-label">应缴金额</label>
         <div class="layui-input-block">
             <input type="text" name="textMoney" required lay-verify="required" placeholder="请输入应缴金额" autocomplete="off"
-                   class="layui-input" value="${textMoney}">
+                   class="layui-input" value="${pay.textMoney}">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">实缴金额</label>
         <div class="layui-input-block">
             <input type="text" name="valueMoney" required lay-verify="required" placeholder="请输入实缴金额" autocomplete="off"
-                   class="layui-input" value="${valueMoney}">
+                   class="layui-input" value="${pay.valueMoney}">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">减免</label>
         <div class="layui-input-block">
             <input type="text" name="tax" required lay-verify="required" placeholder="请输入减免金额" autocomplete="off"
-                   class="layui-input" value="${tax}">
+                   class="layui-input" value="${pay.tax}">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">缴费项</label>
         <div class="layui-input-block">
             <input type="text" name="comment" required lay-verify="required" placeholder="请输入缴费项" autocomplete="off"
-                   class="layui-input" value="${comment}">
+                   class="layui-input" value="${pay.comment}">
         </div>
     </div>
 
@@ -59,7 +59,7 @@
             </c:if>
             <c:if test="${method=='update'}">
                 <select name="payerId" lay-verify="required" disabled="disabled">
-                    <option value="${payerId}">${payerName}</option>
+                    <option value="${pay.payerId}">${pay.payerName}</option>
                 </select>
             </c:if>
         </div>
@@ -75,7 +75,7 @@
             </c:if>
             <c:if test="${method=='update'}">
                 <select name="payeeId" lay-verify="required" disabled="disabled">
-                    <option value="${payeeId}">${payeeName}</option>
+                    <option value="${pay.payeeId}">${pay.payeeName}</option>
                 </select>
             </c:if>
         </div>
