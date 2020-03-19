@@ -47,12 +47,13 @@ public class OpinionController {
         return eiInfo;
     }
 
-    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public EiInfo select(int page, int limit, String intro, String status) throws Exception {
+    public EiInfo select(int page, int limit, String userId, String intro, String status) throws Exception {
         HashMap map = new HashMap();
-        map.put("start", (page - 1) * limit);
-        map.put("limit", limit);
+        map.put("start", String.valueOf((page - 1) * limit));
+        map.put("limit", String.valueOf(limit));
+        map.put("userId", userId);
         map.put("intro", intro);
         map.put("status", status);
         List<HashMap> opinions = opinionService.listOpinion(map);
@@ -86,6 +87,16 @@ public class OpinionController {
         EiInfo eiInfo = new EiInfo();
         eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
         eiInfo.setMessage("编辑成功");
+        return eiInfo;
+    }
+
+    @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public EiInfo updateStatus(@RequestParam("opinionIds[]") int[] opinionIds) throws Exception {
+        opinionService.updateStatus(OpinionStatus.OPINION_STATUS_HANDED,opinionIds);
+        EiInfo eiInfo = new EiInfo();
+        eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
+        eiInfo.setMessage("处理成功");
         return eiInfo;
     }
 

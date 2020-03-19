@@ -19,13 +19,16 @@
     </insert>
 
     <select id="count" resultType="int">
-        select count(1) from opinion
-        where 1=1
+        select count(1) from opinion a,user b
+        where a.CREATOR_ID = b.id
+        <if test="userId!=null and userId!=''">
+            AND b.ID =#{userId}
+        </if>
         <if test="intro!=null and intro!=''">
-            AND INTRO like '%${intro}%'
+            AND a.INTRO like '%${intro}%'
         </if>
         <if test="status!=null and status!=''">
-            AND STATUS = #{status}
+            AND a.STATUS = #{status}
         </if>
     </select>
 
@@ -39,7 +42,13 @@
         b.name as name,
         b.RNAME as rname
         from opinion a,user b
-        where 1=1 and a.CREATOR_ID = b.id
+        where a.CREATOR_ID = b.id
+        <if test="id!=null and id!=''">
+            AND a.ID =#{id}
+        </if>
+        <if test="userId!=null and userId!=''">
+            AND b.ID =#{userId}
+        </if>
         <if test="intro!=null and intro!=''">
             AND a.INTRO like '%${intro}%'
         </if>
@@ -47,7 +56,9 @@
             AND a.STATUS = #{status}
         </if>
         order by a.create_time desc
-        limit ${start},${limit}
+        <if test="start!=null and start!='' and limit!=null and limit!=''">
+            limit ${start},${limit}
+        </if>
     </select>
 
     <delete id="deleteOpinion" parameterType="String">
@@ -63,6 +74,13 @@
         set INTRO   = #{intro},
             DETAILS = #{details}
         where ID = #{id}
+    </update>
+
+    <update id="updateStatus">
+        update opinion set STATUS = #{status} where ID in
+        <foreach collection="array" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </update>
 
 

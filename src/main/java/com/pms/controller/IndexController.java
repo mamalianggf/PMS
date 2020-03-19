@@ -1,5 +1,7 @@
 package com.pms.controller;
 
+import com.pms.service.DecorationService;
+import com.pms.service.OpinionService;
 import com.pms.service.PayService;
 import com.pms.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,12 @@ public class IndexController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private PayService payService;
+    @Autowired
+    private OpinionService opinionService;
+    @Autowired
+    private DecorationService decorationService;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(HttpServletRequest request) {
@@ -37,18 +42,14 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/opinion/submit", method = RequestMethod.GET)
-    public ModelAndView opinionSubmit(HttpServletRequest request, String method, String id, String intro, String details) {
+    public ModelAndView opinionSubmit(HttpServletRequest request, String method, String id, String intro, String details) throws Exception{
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("opinionSubmit");
         modelAndView.addObject("method", method);
-        if (!StringUtils.isEmpty(id)) {
-            modelAndView.addObject("id", id);
-        }
-        if (!StringUtils.isEmpty(intro)) {
-            modelAndView.addObject("intro", intro);
-        }
-        if (!StringUtils.isEmpty(details)) {
-            modelAndView.addObject("details", details);
+        if ("update".equals(method) && !StringUtils.isEmpty(id)) {
+            HashMap map = new HashMap();
+            map.put("id", id);
+            modelAndView.addObject("opinion", opinionService.listOpinion(map).get(0));
         }
         return modelAndView;
     }
@@ -101,6 +102,31 @@ public class IndexController {
             HashMap map = new HashMap();
             map.put("id", id);
             modelAndView.addObject("pay", payService.listPay(map).get(0));
+        }
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "decoration", method = RequestMethod.GET)
+    public ModelAndView decoration() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("decoration");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/decoration/submit", method = RequestMethod.GET)
+    public ModelAndView decorationSubmit(String method, String id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("decorationSubmit");
+        modelAndView.addObject("method", method);
+        if ("add".equals(method)) {
+            List<HashMap> users = userService.listUser(new HashMap());
+            modelAndView.addObject("users", users);
+            modelAndView.addObject("usersSize", users.size());
+        }
+        if ("update".equals(method) && !StringUtils.isEmpty(id)) {
+            HashMap map = new HashMap();
+            map.put("id", id);
+            modelAndView.addObject("decoration", decorationService.listDecoration(map).get(0));
         }
         return modelAndView;
     }

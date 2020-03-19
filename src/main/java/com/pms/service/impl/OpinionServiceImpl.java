@@ -38,4 +38,9 @@ public class OpinionServiceImpl implements OpinionService {
     public int count(HashMap map) throws Exception {
         return opinionMapper.count(map);
     }
+
+    @Override
+    public int updateStatus(int status, int[] opinionIds) throws Exception {
+        return opinionMapper.updateStatus(status, opinionIds);
+    }
 }

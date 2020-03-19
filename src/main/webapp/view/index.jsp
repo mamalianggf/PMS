@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <% String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";%>
 <!DOCTYPE html>
 <html>
@@ -34,10 +35,10 @@
                     ${sessionScope.role.name}
                     ${sessionScope.user.name}
                 </a>
-                <dl class="layui-nav-child">
+                <%--<dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
                     <dd><a href="">安全设置</a></dd>
-                </dl>
+                </dl>--%>
             </li>
             <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/exit">注销</a></li>
         </ul>
@@ -47,47 +48,59 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <c:if test="${sessionScope.role.id=='2' ||sessionScope.role.id=='5'||sessionScope.role.id=='4'}"><!-- 仅业主，物业管理员，admin展示 -->
                 <li class="layui-nav-item">
-                    <a class="" href="javascript:;">业主反馈</a>
+                    <a href="javascript:;">业主反馈</a>
                     <dl class="layui-nav-child">
+                        <c:if test="${sessionScope.role.id=='2'}"><!-- 仅业主展示 -->
                         <dd><a href="/PMS/opinion/submit?method=add" target="iframeName">意见反馈</a></dd>
+                        </c:if>
                         <dd><a href="/PMS/opinion" target="iframeName">意见查阅</a></dd>
                     </dl>
                 </li>
+                </c:if>
+
+                <c:if test="${sessionScope.role.id=='5'||sessionScope.role.id=='4'}"><!-- 仅物业管理员，admin展示 -->
                 <li class="layui-nav-item">
                     <a href="javascript:;">住户管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">住户登记</a></dd>
+                        <dd><a href="/PMS/user" target="iframeName">住户时间车辆住址查询</a></dd>
+                        <dd><a href="/PMS/decoration" target="iframeName">装修登记</a></dd>
+                        <dd><a href="javascript:;">车辆车位登记（no）</a></dd>
+                        <dd><a href="javascript:;">住址登记(no)</a></dd>
                     </dl>
                 </li>
+                </c:if>
+
+                <c:if test="${sessionScope.role.id=='1'||sessionScope.role.id=='4'||sessionScope.role.id=='5'}"><!-- 仅保安，物业管理员，admin展示 -->
                 <li class="layui-nav-item">
-                    <a href="javascript:;">入住管理</a>
+                    <a href="javascript:;">出入管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">入住登记</a></dd>
-                        <dd><a href="javascript:;">装修登记</a></dd>
-                        <dd><a href="javascript:;">车位登记</a></dd>
+                        <dd><a href="javascript:;">出入人员车辆登记</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">维修管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">设备报修</a></dd>
-                        <dd><a href="javascript:;">装修清单</a></dd>
-                        <dd><a href="javascript:;">维修记录</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">缴费管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="/PMS/pay" target="iframeName">缴费查询</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">住户管理</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="/PMS/user" target="iframeName">住户查询</a></dd>
-                    </dl>
-                </li>
+                </c:if>
+
+                <c:if test="${sessionScope.role.id=='3'||sessionScope.role.id=='4'||sessionScope.role.id=='5'}">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">维修管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">设备报修</a></dd>
+                            <dd><a href="javascript:;">装修清单</a></dd>
+                            <dd><a href="javascript:;">维修记录</a></dd>
+                        </dl>
+                    </li>
+                </c:if>
+
+                <c:if test="${sessionScope.role.id=='5'||sessionScope.role.id=='4'}">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">缴费管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/PMS/pay" target="iframeName">缴费查询</a></dd>
+                        </dl>
+                    </li>
+                </c:if>
+
             </ul>
         </div>
     </div>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -51,6 +52,10 @@ public class LoginController {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
             session.setAttribute("role", role);
+            Cookie roleIdcookie = new Cookie("roleId", String.valueOf(role.getId()));
+            Cookie userIdcookie = new Cookie("userId", String.valueOf(user.getId()));
+            response.addCookie(roleIdcookie);
+            response.addCookie(userIdcookie);
             eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
             eiInfo.setMessage("登录成功");
         } else {

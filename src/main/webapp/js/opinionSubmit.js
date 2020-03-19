@@ -8,6 +8,20 @@ layui.use(['form', 'jquery'], function () {
         top: ($(window).height() - $("#opinion_form").outerHeight()) / 2
     });
 
+    form.verify({
+        intro: function (value, item) { //value：表单的值、item：表单的DOM对象
+            if (value.length > 15) {
+                return "请控制字数在15以内"
+            }
+        },
+        details: function (value, item) { //value：表单的值、item：表单的DOM对象
+            if (value.length > 50) {
+                return "请控制字数在50以内"
+            }
+        }
+
+    });
+
 
     //监听提交
     form.on('submit(opinionform)', function (data) {
@@ -23,7 +37,9 @@ layui.use(['form', 'jquery'], function () {
             data: data.field,
             success: function (data) {
                 layer.msg(data.message, {offset: '100px'});
-                $("#reset").click();
+                if ("add" == $("#form").attr("method")) {
+                    $("#reset").click();
+                }
             }
         });
         return false;

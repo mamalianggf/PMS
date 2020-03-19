@@ -15,21 +15,21 @@
 
 <form id="opinion_form" class="layui-form" action="">
     <c:if test="${method =='update'}">
-        <input type="text" name="id" value="${id}" style="display: none">
+        <input type="text" name="id" value="${opinion.id}" style="display: none">
     </c:if>
 
     <div class="layui-form-item">
         <label class="layui-form-label">简介</label>
         <div class="layui-input-block">
-            <input type="text" name="intro" required lay-verify="required" placeholder="请输入简介" autocomplete="off"
-                   class="layui-input" value="${intro}">
+            <input type="text" name="intro" required lay-verify="required|intro" placeholder="请输入简介" autocomplete="off"
+                   class="layui-input" value="${opinion.intro}">
         </div>
     </div>
 
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">详情</label>
         <div class="layui-input-block">
-            <textarea name="details" placeholder="请输入内容" class="layui-textarea">${details}</textarea>
+            <textarea name="details" placeholder="请输入内容" lay-verify="required|details" class="layui-textarea">${opinion.details}</textarea>
         </div>
     </div>
     <div class="layui-form-item">

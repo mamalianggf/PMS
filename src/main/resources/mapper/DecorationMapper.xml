@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.mapper.DecorationMapper">
+
+
+    <insert id="insertDecoration" parameterType="Decoration">
+        insert into decoration (address, start_time, user_id)
+        values (#{address}, #{start_time}, #{user_id})
+    </insert>
+
+    <select id="count" resultType="int">
+        select count(1) from decoration a,user b
+        where a.USER_ID = b.ID
+        <if test="address!=null and address!=''">
+            AND a.ADDRESS like '%${address}%'
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND b.NAME = #{userName}
+        </if>
+    </select>
+
+    <select id="listDecoration" parameterType="HashMap" resultType="HashMap">
+        select a.id as id,
+        a.ADDRESS as address,
+        a.START_TIME as startTime,
+        b.id as userId,
+        b.name as userName,
+        b.RNAME as userRname
+        from decoration a,user b
+        where a.USER_ID = b.ID
+        <if test="id!=null and id!=''">
+            AND a.ID =#{id}
+        </if>
+        <if test="address!=null and address!=''">
+            AND a.ADDRESS like '%${address}%'
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND b.NAME = #{userName}
+        </if>
+        order by a.START_TIME desc
+        <if test="start!=null and start!='' and limit!=null and limit!=''">
+            limit ${start},${limit}
+        </if>
+    </select>
+
+    <update id="updateDecoration" parameterType="HashMap">
+        update decoration
+        set START_TIME = #{startTime}
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteDecoration" parameterType="String">
+        delete from decoration
+        WHERE ID in
+        <foreach collection="array" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+
+</mapper>
