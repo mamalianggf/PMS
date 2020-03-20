@@ -42,7 +42,7 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/opinion/submit", method = RequestMethod.GET)
-    public ModelAndView opinionSubmit(HttpServletRequest request, String method, String id, String intro, String details) throws Exception{
+    public ModelAndView opinionSubmit(HttpServletRequest request, String method, String id, String intro, String details) throws Exception {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("opinionSubmit");
         modelAndView.addObject("method", method);
@@ -76,7 +76,7 @@ public class IndexController {
         if ("update".equals(method) && !StringUtils.isEmpty(id)) {
             HashMap map = new HashMap();
             map.put("id", id);
-            modelAndView.addObject("user", userService.listUser(map).get(0));
+            modelAndView.addObject("people", userService.listUser(map).get(0));
         }
         return modelAndView;
     }
@@ -119,7 +119,9 @@ public class IndexController {
         modelAndView.setViewName("decorationSubmit");
         modelAndView.addObject("method", method);
         if ("add".equals(method)) {
-            List<HashMap> users = userService.listUser(new HashMap());
+            HashMap map = new HashMap();
+            map.put("roleId", "2");
+            List<HashMap> users = userService.listUser(map);
             modelAndView.addObject("users", users);
             modelAndView.addObject("usersSize", users.size());
         }

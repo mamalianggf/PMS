@@ -19,24 +19,11 @@
     </c:if>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">装修住址</label>
-        <div class="layui-input-block">
-            <input type="text" name="address" required lay-verify="required" placeholder="请输入装修住址" autocomplete="off"
-                   class="layui-input" value="${decoration.address}">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">开始时间</label>
-        <div class="layui-input-block">
-            <input type="text" name="startTime" required lay-verify="required" placeholder="请输入开始时间" autocomplete="off"
-                   class="layui-input" value="${decoration.startTime}">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">用户账号</label>
+        <label class="layui-form-label"><span style="color: red">*</span>用户账号</label>
         <div class="layui-input-block">
             <c:if test="${method=='add'}">
-                <select name="userId" lay-verify="required" lay-search>
+                <select name="userId" lay-verify="required" lay-search lay-filter="userId">
+                    <option value="">---请选择---</option>
                     <c:forEach items="${users}" var="user" begin="0" end="${usersSize}" step="1">
                         <option value="${user.id}">${user.name}</option>
                     </c:forEach>
@@ -49,6 +36,24 @@
             </c:if>
         </div>
     </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">装修住址</label>
+        <div class="layui-input-block">
+            <input type="text" name="address" required lay-verify="required" placeholder="请输入装修住址" autocomplete="off" disabled="disabled"
+                   class="layui-input" value="${decoration.address}">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"><span style="color: red">*</span>开始时间</label>
+        <div class="layui-input-block">
+            <%--<input type="text" name="startTime" required lay-verify="required" placeholder="请输入开始时间" autocomplete="off"
+                   class="layui-input" value="${decoration.startTime}">--%>
+            <input type="text" class="layui-input" name="startTime" required lay-verify="required" id="startTime">
+        </div>
+    </div>
+
 
     <div class="layui-form-item">
         <div class="layui-input-block">

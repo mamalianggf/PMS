@@ -15,16 +15,16 @@
 
 <form id="user_form" class="layui-form" action="">
     <c:if test="${method =='update'}">
-        <input type="text" name="id" value="${user.id}" style="display: none">
+        <input type="text" name="id" value="${people.id}" style="display: none">
     </c:if>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">账号</label>
+        <label class="layui-form-label"><span style="color: red">*</span>账号</label>
         <div class="layui-input-block">
             <c:choose>
-                <c:when test="${user.name != ''&& user.name!=null}">
+                <c:when test="${people.name != ''&& people.name!=null}">
                     <input type="text" name="name" required lay-verify="required" placeholder="请输入账号" autocomplete="off"
-                           class="layui-input" value="${user.name}" disabled="disabled">
+                           class="layui-input" value="${people.name}" disabled="disabled">
                 </c:when>
                 <c:otherwise>
                     <input type="text" name="name" required lay-verify="required" placeholder="请输入账号" autocomplete="off"
@@ -34,40 +34,40 @@
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">密码</label>
+        <label class="layui-form-label"><span style="color: red">*</span>密码</label>
         <div class="layui-input-block">
             <input type="text" name="pwd" required lay-verify="required" placeholder="请输入密码" autocomplete="off"
-                   class="layui-input" value="${user.pwd}">
+                   class="layui-input" value="${people.pwd}">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">电话</label>
+        <label class="layui-form-label"><span style="color: red">*</span>电话</label>
         <div class="layui-input-block">
-            <input type="text" name="phone" required lay-verify="required" placeholder="请输入电话" autocomplete="off"
-                   class="layui-input" value="${user.phone}">
+            <input type="text" name="phone" required lay-verify="required|phone" placeholder="请输入电话" autocomplete="off"
+                   class="layui-input" value="${people.phone}">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">地址</label>
+        <label class="layui-form-label"><span style="color: red">*</span>地址</label>
         <div class="layui-input-block">
             <input type="text" name="address" required lay-verify="required" placeholder="请输入地址" autocomplete="off"
-                   class="layui-input" value="${user.address}">
+                   class="layui-input" value="${people.address}">
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">姓名</label>
+        <label class="layui-form-label"><span style="color: red">*</span>姓名</label>
         <div class="layui-input-block">
             <input type="text" name="rname" required lay-verify="required" placeholder="请输入姓名" autocomplete="off"
-                   class="layui-input" value="${user.rname}">
+                   class="layui-input" value="${people.rname}">
         </div>
     </div>
-    <div class="layui-form-item layui-form-text">
+    <%--<div class="layui-form-item layui-form-text">
         <label class="layui-form-label">角色</label>
         <div class="layui-input-block">
             <select name="roleId">
                 <option value="">---请选择---</option>
                 <c:choose>
-                    <c:when test="${user.roleId == '1'}">
+                    <c:when test="${people.roleId == '1'}">
                         <option value="1" selected>保安</option>
                     </c:when>
                     <c:otherwise>
@@ -75,7 +75,7 @@
                     </c:otherwise>
                 </c:choose>
                 <c:choose>
-                    <c:when test="${user.roleId == '2'}">
+                    <c:when test="${people.roleId == '2'}">
                         <option value="2" selected>业主</option>
                     </c:when>
                     <c:otherwise>
@@ -83,7 +83,7 @@
                     </c:otherwise>
                 </c:choose>
                 <c:choose>
-                    <c:when test="${user.roleId == '3'}">
+                    <c:when test="${people.roleId == '3'}">
                         <option value="3" selected>维修人员</option>
                     </c:when>
                     <c:otherwise>
@@ -91,7 +91,7 @@
                     </c:otherwise>
                 </c:choose>
                 <c:choose>
-                    <c:when test="${user.roleId == '4'}">
+                    <c:when test="${people.roleId == '4'}">
                         <option value="4" selected>软件管理人员</option>
                     </c:when>
                     <c:otherwise>
@@ -99,7 +99,7 @@
                     </c:otherwise>
                 </c:choose>
                 <c:choose>
-                    <c:when test="${user.roleId == '5'}">
+                    <c:when test="${people.roleId == '5'}">
                         <option value="5" selected>物业管理人员</option>
                     </c:when>
                     <c:otherwise>
@@ -108,7 +108,7 @@
                 </c:choose>
             </select>
         </div>
-    </div>
+    </div>--%>
     <div class="layui-form-item">
         <div class="layui-input-block">
             <c:if test="${method =='add'}">

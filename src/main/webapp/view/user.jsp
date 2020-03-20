@@ -24,7 +24,7 @@
                 <input type="text" name="rname"
                        placeholder="请输入姓名" autocomplete="off" class="layui-input">
             </div>
-            &nbsp;&nbsp;角色:
+            <%--&nbsp;&nbsp;角色:
             <div class="layui-input-inline">
                 <select name="roleId">
                     <option value="">---请选择---</option>
@@ -34,7 +34,7 @@
                     <option value="4">软件管理人员</option>
                     <option value="5">物业管理人员</option>
                 </select>
-            </div>
+            </div>--%>
             &nbsp;
             <button class="layui-btn" lay-submit lay-filter="userSearch">
                 <i class="layui-icon">&#xe615;</i>

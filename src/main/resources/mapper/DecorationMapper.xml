@@ -6,7 +6,7 @@
 
     <insert id="insertDecoration" parameterType="Decoration">
         insert into decoration (address, start_time, user_id)
-        values (#{address}, #{start_time}, #{user_id})
+        values (#{address}, #{startTime}, #{userId})
     </insert>
 
     <select id="count" resultType="int">

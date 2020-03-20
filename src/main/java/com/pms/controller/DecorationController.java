@@ -26,12 +26,12 @@ public class DecorationController {
 
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
-    public EiInfo select(int page, int limit, String intro, String status) throws Exception {
+    public EiInfo select(int page, int limit, String address, String userName) throws Exception {
         HashMap map = new HashMap();
         map.put("start", (page - 1) * limit);
         map.put("limit", limit);
-        map.put("intro", intro);
-        map.put("status", status);
+        map.put("address", address);
+        map.put("userName", userName);
         List<HashMap> decorations = decorationService.listDecoration(map);
         EiInfo eiInfo = new EiInfo();
         eiInfo.setStatus(HttpConstant.HTTP_CODE_200);

@@ -19,7 +19,7 @@
     </c:if>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">简介</label>
+        <label class="layui-form-label"><span style="color: red">*</span>简介</label>
         <div class="layui-input-block">
             <input type="text" name="intro" required lay-verify="required|intro" placeholder="请输入简介" autocomplete="off"
                    class="layui-input" value="${opinion.intro}">
@@ -27,9 +27,10 @@
     </div>
 
     <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">详情</label>
+        <label class="layui-form-label layui-required"><span style="color: red">*</span>详情</label>
         <div class="layui-input-block">
-            <textarea name="details" placeholder="请输入内容" lay-verify="required|details" class="layui-textarea">${opinion.details}</textarea>
+            <textarea name="details" placeholder="请输入内容" lay-verify="required|details"
+                      class="layui-textarea">${opinion.details}</textarea>
         </div>
     </div>
     <div class="layui-form-item">

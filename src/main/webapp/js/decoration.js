@@ -27,14 +27,16 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
         }
         , title: '装修表'
         , page: true //开启分页
+        , limit: 5
+        , limits: [5, 10, 15, 20, 25, 30, 35, 40, 45]
         , toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
             , {field: 'id', title: 'ID', fixed: 'left'}
             , {field: 'address', title: '地址'}
             , {field: 'startTime', title: '开始时间'}
-            , {field: 'name', title: '用户账户'}
-            , {field: 'rname', title: '用户姓名'}
+            , {field: 'userName', title: '用户账户'}
+            , {field: 'userRname', title: '用户姓名'}
             , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
         ]]
     });
@@ -47,8 +49,8 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
             case 'add':
                 layer.open({
                     type: 2,
-                    area: ['500px', '400px'],
-                    content: ['/PMS/decoration/submit?method=add', 'no'],
+                    area: ['500px', '500px'],
+                    content: ['/PMS/decoration/submit?method=add'],
                     end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
                         decorationTable.reload({});
                     }
@@ -107,8 +109,8 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
             let id = obj.data.id;
             layer.open({
                 type: 2,
-                area: ['500px', '400px'],
-                content: ['/PMS/decoration/submit?method=update&id=' + id, 'no'],
+                area: ['500px', '500px'],
+                content: ['/PMS/decoration/submit?method=update&id=' + id],
                 end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
                     decorationTable.reload({});
                 }
@@ -129,17 +131,15 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
         }
     });
 
-    form.on('submit(opinionSearch)', function (data) {
+    form.on('submit(decorationSearch)', function (data) {
         let formData = data.field;
-        let intro = formData.intro,
-            status = formData.status;
-        opinionTable.reload({
+        let address = formData.address,
+            userName = formData.userName;
+        decorationTable.reload({
             where: {
-                intro: intro,
-                status: status
-            },
-            method: 'post',
-            url: '/PMS/opinion/select',
+                address: address,
+                userName: userName
+            }
         });
         return false;
     });

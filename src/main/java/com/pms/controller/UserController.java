@@ -2,6 +2,7 @@ package com.pms.controller;
 
 import com.pms.constant.HttpConstant;
 import com.pms.constant.OpinionStatus;
+import com.pms.constant.RoleConstant;
 import com.pms.entity.EiInfo;
 import com.pms.entity.Opinion;
 import com.pms.entity.User;
@@ -10,6 +11,7 @@ import com.pms.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +31,7 @@ public class UserController {
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @ResponseBody
-    public EiInfo submit(HttpServletRequest request, User user, String roleId) throws Exception {
+    public EiInfo submit(HttpServletRequest request, User user) throws Exception {
         User authentication = userService.authentication(user.getName());
         EiInfo eiInfo = new EiInfo();
         if (authentication != null) {
@@ -39,7 +41,8 @@ public class UserController {
         }
         user.setCreateTime(DateUtil.now());
         userService.insertUser(user);
-        userService.insertUser_role(String.valueOf(userService.authentication(user.getName()).getId()), roleId);
+        //默认为业主
+        userService.insertUser_role(String.valueOf(userService.authentication(user.getName()).getId()), String.valueOf(RoleConstant.ROLE_OWNER));
         eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
         eiInfo.setMessage("新增成功");
         return eiInfo;
@@ -47,10 +50,13 @@ public class UserController {
 
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
-    public EiInfo select(int page, int limit, String name, String rname, String roleId) throws Exception {
+    public EiInfo select(String page, String limit, String id, String name, String rname, String roleId) throws Exception {
         HashMap map = new HashMap();
-        map.put("start", (page - 1) * limit);
-        map.put("limit", limit);
+        if (!StringUtils.isEmpty(page) && !StringUtils.isEmpty(limit)) {
+            map.put("start", (Integer.valueOf(page) - 1) * Integer.valueOf(limit));
+            map.put("limit", limit);
+        }
+        map.put("id", id);
         map.put("name", name);
         map.put("rname", rname);
         map.put("roleId", roleId);
@@ -73,10 +79,10 @@ public class UserController {
         map.put("address", address);
         map.put("rname", rname);
         userService.updateUser(map);
-        HashMap param = new HashMap();
+        /*HashMap param = new HashMap();
         param.put("userId", id);
         param.put("roleId", roleId);
-        userService.updateUser_role(param);
+        userService.updateUser_role(param);*/
         EiInfo eiInfo = new EiInfo();
         eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
         eiInfo.setMessage("编辑成功");

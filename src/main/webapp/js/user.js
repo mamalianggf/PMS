@@ -14,6 +14,7 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
         elem: '#user'
         , method: "POST"
         , url: '/PMS/user/select' //数据接口
+        , where: {roleId: 2}
         , parseData: function (res) { //res 即为原始返回的数据
             if ("200" == res.status) {
                 res.status = 0;
@@ -27,6 +28,8 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
         }
         , title: '用户表'
         , page: true //开启分页
+        , limit: 5
+        , limits: [5, 10, 15, 20, 25, 30, 35, 40, 45]
         , toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
@@ -37,8 +40,8 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
             , {field: 'address', title: '住址'}
             , {field: 'createTime', title: '入住时间'}
             , {field: 'rname', title: '姓名'}
-            , {field: 'roleId', title: '角色Id', hide: true}
-            , {field: 'roleName', title: '角色'}
+            /*, {field: 'roleId', title: '角色Id', hide: true}
+            , {field: 'roleName', title: '角色'}*/
             , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
         ]]
     });

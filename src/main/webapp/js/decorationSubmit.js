@@ -1,11 +1,32 @@
-layui.use(['form', 'jquery'], function () {
+layui.use(['form', 'jquery', 'laydate'], function () {
     var form = layui.form
+        , laydate = layui.laydate
         , $ = layui.$;
 
-    $("#pay_form").css({
+    $("#decoration_form").css({
         position: "absolute",
-        left: ($(window).width() - $("#pay_form").outerWidth()) / 2,
-        top: ($(window).height() - $("#pay_form").outerHeight()) / 2
+        left: ($(window).width() - $("#decoration_form").outerWidth()) / 2,
+        top: ($(window).height() - $("#decoration_form").outerHeight()) / 2
+    });
+
+    laydate.render({
+        elem: '#startTime'
+        , trigger: 'click'
+        , min: 1
+        , zIndex: 99999999
+    });
+
+    form.on('select(userId)', function (data) {
+        $.ajax({
+            url: "/PMS/user/select",
+            type: "POST",
+            data: {
+                id: data.value
+            },
+            success: function (data) {
+                $('input[name="address"]').val(data.data[0].address);
+            }
+        });
     });
 
 
@@ -23,7 +44,9 @@ layui.use(['form', 'jquery'], function () {
             data: data.field,
             success: function (data) {
                 layer.msg(data.message, {offset: '100px'});
-                $("#reset").click();
+                if ("add" == $("#form").attr("method")) {
+                    $("#reset").click();
+                }
             }
         });
         return false;

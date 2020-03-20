@@ -64,10 +64,9 @@
                 <li class="layui-nav-item">
                     <a href="javascript:;">住户管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="/PMS/user" target="iframeName">住户时间车辆住址查询</a></dd>
-                        <dd><a href="/PMS/decoration" target="iframeName">装修登记</a></dd>
-                        <dd><a href="javascript:;">车辆车位登记（no）</a></dd>
-                        <dd><a href="javascript:;">住址登记(no)</a></dd>
+                        <dd><a href="/PMS/user" target="iframeName">住户信息查询</a></dd>
+                        <dd><a href="/PMS/decoration" target="iframeName">装修登记查询</a></dd>
+                        <dd><a href="javascript:;">车辆车位登记</a></dd>
                     </dl>
                 </li>
                 </c:if>
