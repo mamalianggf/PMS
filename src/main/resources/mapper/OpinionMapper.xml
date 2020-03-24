@@ -21,6 +21,9 @@
     <select id="count" resultType="int">
         select count(1) from opinion a,user b
         where a.CREATOR_ID = b.id
+        <if test="id!=null and id!=''">
+            AND a.ID =#{id}
+        </if>
         <if test="userId!=null and userId!=''">
             AND b.ID =#{userId}
         </if>
@@ -28,7 +31,7 @@
             AND a.INTRO like '%${intro}%'
         </if>
         <if test="status!=null and status!=''">
-            AND a.STATUS = #{status}
+            AND a.STATUS like '${status}%'
         </if>
     </select>
 
@@ -46,6 +49,9 @@
         <if test="id!=null and id!=''">
             AND a.ID =#{id}
         </if>
+        <if test="id!=null and id!=''">
+            AND a.ID =#{id}
+        </if>
         <if test="userId!=null and userId!=''">
             AND b.ID =#{userId}
         </if>
@@ -53,7 +59,7 @@
             AND a.INTRO like '%${intro}%'
         </if>
         <if test="status!=null and status!=''">
-            AND a.STATUS = #{status}
+            AND a.STATUS like '${status}%'
         </if>
         order by a.create_time desc
         <if test="start!=null and start!='' and limit!=null and limit!=''">

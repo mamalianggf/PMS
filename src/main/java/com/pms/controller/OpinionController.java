@@ -9,6 +9,7 @@ import com.pms.service.OpinionService;
 import com.pms.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,11 +50,14 @@ public class OpinionController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public EiInfo select(int page, int limit, String userId, String intro, String status) throws Exception {
+    public EiInfo select(String page, String limit,String id, String userId, String intro, String status) throws Exception {
         HashMap map = new HashMap();
-        map.put("start", String.valueOf((page - 1) * limit));
-        map.put("limit", String.valueOf(limit));
+        if (!StringUtils.isEmpty(page)&&!StringUtils.isEmpty(limit)){
+            map.put("start", String.valueOf((Integer.parseInt(page) - 1) * Integer.parseInt(limit)));
+            map.put("limit", limit);
+        }
         map.put("userId", userId);
+        map.put("id", id);
         map.put("intro", intro);
         map.put("status", status);
         List<HashMap> opinions = opinionService.listOpinion(map);
@@ -92,8 +96,8 @@ public class OpinionController {
 
     @RequestMapping(value = "/updateStatus", method = RequestMethod.POST)
     @ResponseBody
-    public EiInfo updateStatus(@RequestParam("opinionIds[]") int[] opinionIds) throws Exception {
-        opinionService.updateStatus(OpinionStatus.OPINION_STATUS_HANDED,opinionIds);
+    public EiInfo updateStatus(@RequestParam("opinionIds[]") int[] opinionIds,int status) throws Exception {
+        opinionService.updateStatus(status,opinionIds);
         EiInfo eiInfo = new EiInfo();
         eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
         eiInfo.setMessage("处理成功");

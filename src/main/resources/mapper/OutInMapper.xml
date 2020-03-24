@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.mapper.OutInMapper">
+
+
+    <insert id="insertOutIn" parameterType="OutIn">
+        insert into outin (name, phone, license, start_time, end_time, type)
+        values (#{name}, #{phone}, #{license}, #{startTime}, #{endTime}, #{type})
+    </insert>
+
+    <select id="count" resultType="int">
+        select count(1) from outin
+        <if test="startTime!=null and startTime!=''">
+            AND start_time = #{startTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND end_time = #{endTime}
+        </if>
+        <if test="type!=null and type!=''">
+            AND type = #{type}
+        </if>
+    </select>
+
+    <select id="listOutIn" parameterType="HashMap" resultType="HashMap">
+        select id as id,
+        name as name,
+        PHONE as phone,
+        LICENSE as license,
+        START_TIME as startTime,
+        END_TIME as endTime,
+        TYPE as type
+        from outin
+        where 1=1
+        <if test="id!=null and id!=''">
+            AND ID =#{id}
+        </if>
+        <if test="startTime!=null and startTime!=''">
+            AND start_time = #{startTime}
+        </if>
+        <if test="endTime!=null and endTime!=''">
+            AND end_time = #{endTime}
+        </if>
+        <if test="type!=null and type!=''">
+            AND type = #{type}
+        </if>
+        order by START_TIME desc
+        <if test="start!=null and start!='' and limit!=null and limit!=''">
+            limit ${start},${limit}
+        </if>
+    </select>
+
+    <update id="updateOutIn" parameterType="HashMap">
+        update outin
+        set NAME=#{name},PHONE=#{phone},LICENSE=#{license}, START_TIME = #{startTime},END_TIME=#{endTime},TYPE=#{type}
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteOutIn" parameterType="String">
+        delete from outin
+        WHERE ID in
+        <foreach collection="array" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

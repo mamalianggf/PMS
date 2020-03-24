@@ -75,11 +75,20 @@
 
     <update id="updateUser" parameterType="HashMap">
         update user
-        set pwd     = #{pwd},
-            PHONE   = #{phone},
-            ADDRESS = #{address},
-            RNAME   = #{rname}
-        where ID = #{id}
+        set pwd = #{pwd}
+        <if test="phone!=null and phone!=''">
+            ,PHONE = #{phone}
+        </if>
+        <if test="address!=null and address!=''">
+            ,ADDRESS = #{address}
+        </if>
+        <if test="rname!=null and rname!=''">
+            ,RNAME = #{rname}
+        </if>
+        where id = #{id}
+        <if test="oldPwd!=null and oldPwd!=''">
+            AND pwd = #{oldPwd}
+        </if>
     </update>
 
     <update id="updateUser_role" parameterType="HashMap">

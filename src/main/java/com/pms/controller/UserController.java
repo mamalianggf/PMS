@@ -71,21 +71,27 @@ public class UserController {
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public EiInfo update(int id, String pwd, String phone, String address, String rname, String roleId) throws Exception {
+    public EiInfo update(int id, String pwd, String oldPwd, String phone, String address, String rname, String roleId) throws Exception {
         HashMap map = new HashMap();
         map.put("id", id);
         map.put("pwd", pwd);
         map.put("phone", phone);
+        map.put("oldPwd", oldPwd);
         map.put("address", address);
         map.put("rname", rname);
-        userService.updateUser(map);
+        int result = userService.updateUser(map);
+        EiInfo eiInfo = new EiInfo();
+        if (!StringUtils.isEmpty(oldPwd) && result == 0) {
+            eiInfo.setStatus(HttpConstant.HTTP_CODE_405);
+            eiInfo.setMessage("旧密码错误");
+        } else {
+            eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
+            eiInfo.setMessage("重置成功");
+        }
         /*HashMap param = new HashMap();
         param.put("userId", id);
         param.put("roleId", roleId);
         userService.updateUser_role(param);*/
-        EiInfo eiInfo = new EiInfo();
-        eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
-        eiInfo.setMessage("编辑成功");
         return eiInfo;
     }
 

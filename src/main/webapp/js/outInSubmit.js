@@ -3,7 +3,7 @@ layui.use(['form', 'jquery', 'laydate'], function () {
         , laydate = layui.laydate
         , $ = layui.$;
 
-    $("#decoration_form").css({
+    $("#outIn_form").css({
         position: "absolute",
         left: ($(window).width() - $("#decoration_form").outerWidth()) / 2,
         top: ($(window).height() - $("#decoration_form").outerHeight()) / 2
@@ -13,29 +13,18 @@ layui.use(['form', 'jquery', 'laydate'], function () {
         elem: '#startTime'
         , trigger: 'click'
         , min: 1
+        , zIndex: 99999999
     });
 
-    form.on('select(userId)', function (data) {
-        $.ajax({
-            url: "/PMS/user/select",
-            type: "POST",
-            data: {
-                id: data.value
-            },
-            success: function (data) {
-                $('input[name="address"]').val(data.data[0].address);
-            }
-        });
-    });
 
 
     //监听提交
-    form.on('submit(decorationform)', function (data) {
+    form.on('submit(outInform)', function (data) {
         let url;
         if ("add" == $("#form").attr("method")) {
-            url = "/PMS/decoration/submit";
+            url = "/PMS/outIn/submit";
         } else {
-            url = "/PMS/decoration/update";
+            url = "/PMS/outIn/update";
         }
         $.ajax({
             url: url,

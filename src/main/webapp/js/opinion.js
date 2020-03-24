@@ -152,7 +152,8 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
                     url: "/PMS/opinion/updateStatus",
                     type: "POST",
                     data: {
-                        opinionIds: arr
+                        opinionIds: arr,
+                        status: 20
                     },
                     success: function (data) {
                         layer.msg(data.message);
@@ -209,9 +210,11 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
     form.on('submit(opinionSearch)', function (data) {
         let formData = data.field;
         let intro = formData.intro,
+            id = formData.id,
             status = formData.status;
         opinionTable.reload({
             where: {
+                id: id,
                 intro: intro,
                 status: status
             }
@@ -229,5 +232,39 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
             return null;
     }
 
-
+    if ($('input[name="id"]').val() != '') {
+        let id = $('input[name="id"]').val();
+        let arr = [id];
+        let status;
+        if (getCookie("roleId") == '2') {//业主：10->1,20->2
+            $.ajax({
+                url: "/PMS/opinion/list?id=" + id,
+                type: "Get",
+                async: false,
+                success: function (data) {
+                    if (data.data[0].status == 10) {
+                        status = 1
+                    }
+                    if (data.data[0].status == 20) {
+                        status = 2
+                    }
+                }
+            });
+        }
+        if (getCookie("roleId") == '5') {//物业：0->10
+            status = 10
+        }
+        $.ajax({
+            url: "/PMS/opinion/updateStatus",
+            type: "POST",
+            data: {
+                opinionIds: arr,
+                status: status
+            },
+            async: false,
+            success: function (data) {
+                $("#opinionSearch").click();
+            }
+        });
+    }
 });

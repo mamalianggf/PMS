@@ -15,6 +15,11 @@
 <div id="container">
     <div class="layui-row">
         <form class="layui-form layui-col-md12">
+            &nbsp;id:
+            <div class="layui-input-inline">
+                <input type="text" name="id"
+                       placeholder="请输入id" autocomplete="off" class="layui-input" value="${id}">
+            </div>
             &nbsp;简介:
             <div class="layui-input-inline">
                 <input type="text" name="intro"
@@ -30,7 +35,7 @@
                 </select>
             </div>
             &nbsp;
-            <button class="layui-btn" lay-submit lay-filter="opinionSearch">
+            <button id="opinionSearch" class="layui-btn" lay-submit lay-filter="opinionSearch">
                 <i class="layui-icon">&#xe615;</i>
             </button>
         </form>
@@ -56,7 +61,7 @@
         </c:if>
         <c:if test="${sessionScope.role.id=='5'}"><!-- 只有物业管理员可以解决 -->
 
-        {{#  if(d.status == 2){ }}
+        {{#  if(d.status.toString().substr(0,1) == 2){ }}
         <button class="layui-btn layui-btn-xs layui-btn-disabled">已解决</button>
         {{#  } else { }}
         <button class="layui-btn layui-btn-xs layui-btn-warn" lay-event="solve">解决</button>
@@ -65,12 +70,14 @@
     </script>
 
     <script type="text/html" id="titleTpl">
-        {{#  if(d.status == 0){ }}
+        {{#  if(d.status.toString().substr(0,1) == 0){ }}
         未处理
-        {{#  } else if(d.status == 1) { }}
+        {{#  } else if(d.status.toString().substr(0,1) == 1) { }}
         处理中
-        {{#  } else{ }}
+        {{#  } else if(d.status.toString().substr(0,1) == 2){ }}
         已处理
+        {{#  } else { }}
+        未知数据
         {{#  } }}
     </script>
 
