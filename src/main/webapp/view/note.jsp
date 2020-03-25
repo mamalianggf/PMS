@@ -23,15 +23,26 @@
             </div>
         </div>
     </c:if>
+    <c:if test="${yezhuopinions !=null}">
+        <div class="layui-card">
+            <div class="layui-card-header" style="font-size: 21px;">反馈</div>
+            <div class="layui-card-body">
+                <c:forEach items="${yezhuopinions}" var="opinion" begin="0" end="${yezhuopinionsSize}" step="1">
+                    <a href="/PMS/opinion?id=${opinion.id}"
+                       target="iframeName"><strong>您于${opinion.createTime}反馈的${opinion.intro}有了新的进展,点击查看进程</strong></a><br>
+                </c:forEach>
+            </div>
+        </div>
+    </c:if>
 </div>
 </body>
 <script src="<%=basePath%>layui/layui.js"></script>
 <script>
     layui.use(['jquery'], function () {
         let $ = layui.$;
-        /*if ($("#container").innerText == "") {
-            $("#container").innerText = "当前无通知，若存在延迟请点击通知刷新"
-        }*/
+        if ($("#container").html().trim() == "") {
+            $("#container").html("当前无通知，若存在延迟请点击通知刷新");
+        }
     })
 </script>
 </html>

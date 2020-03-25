@@ -60,8 +60,8 @@ public class IndexController {
             List<HashMap> opinions2 = opinionService.listOpinion(opinionParam);
             opinions1.addAll(opinions2);
             if (opinions1.size() != 0) {
-                modelAndView.addObject("opinions", opinions1);
-                modelAndView.addObject("opinionsSize", opinions1.size());
+                modelAndView.addObject("yezhuopinions", opinions1);
+                modelAndView.addObject("yezhuopinionsSize", opinions1.size());
             }
         }
 
@@ -228,7 +228,20 @@ public class IndexController {
     @RequestMapping(value = "people", method = RequestMethod.GET)
     public ModelAndView people() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("user");
+        modelAndView.setViewName("people");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/people/submit", method = RequestMethod.GET)
+    public ModelAndView peopleSubmit(String method, String id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("peopleSubmit");
+        modelAndView.addObject("method", method);
+        if ("update".equals(method) && !StringUtils.isEmpty(id)) {
+            HashMap map = new HashMap();
+            map.put("id", id);
+            modelAndView.addObject("people", userService.listUser(map).get(0));
+        }
         return modelAndView;
     }
 }

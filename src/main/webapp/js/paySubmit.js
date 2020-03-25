@@ -23,7 +23,9 @@ layui.use(['form', 'jquery'], function () {
             data: data.field,
             success: function (data) {
                 layer.msg(data.message, {offset: '100px'});
-                $("#reset").click();
+                if ("add" == $("#form").attr("method")) {
+                    $("#reset").click();
+                }
             }
         });
         return false;

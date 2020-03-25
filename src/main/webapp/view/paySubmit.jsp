@@ -19,28 +19,28 @@
     </c:if>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">应缴金额</label>
+        <label class="layui-form-label"><span style="color: red">*</span>应缴金额</label>
         <div class="layui-input-block">
-            <input type="text" name="textMoney" required lay-verify="required" placeholder="请输入应缴金额" autocomplete="off"
+            <input type="text" name="textMoney" required lay-verify="required|number" placeholder="请输入应缴金额" autocomplete="off"
                    class="layui-input" value="${pay.textMoney}">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">实缴金额</label>
+        <label class="layui-form-label"><span style="color: red">*</span>实缴金额</label>
         <div class="layui-input-block">
-            <input type="text" name="valueMoney" required lay-verify="required" placeholder="请输入实缴金额" autocomplete="off"
+            <input type="text" name="valueMoney" required lay-verify="required|number" placeholder="请输入实缴金额" autocomplete="off"
                    class="layui-input" value="${pay.valueMoney}">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">减免</label>
+        <label class="layui-form-label"><span style="color: red">*</span>减免</label>
         <div class="layui-input-block">
-            <input type="text" name="tax" required lay-verify="required" placeholder="请输入减免金额" autocomplete="off"
+            <input type="text" name="tax" required lay-verify="required|number" placeholder="请输入减免金额" autocomplete="off"
                    class="layui-input" value="${pay.tax}">
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">缴费项</label>
+        <label class="layui-form-label"><span style="color: red">*</span>缴费项</label>
         <div class="layui-input-block">
             <input type="text" name="comment" required lay-verify="required" placeholder="请输入缴费项" autocomplete="off"
                    class="layui-input" value="${pay.comment}">
@@ -48,10 +48,11 @@
     </div>
 
     <div class="layui-form-item">
-        <label class="layui-form-label">付款人账号</label>
+        <label class="layui-form-label"><span style="color: red">*</span>付款人账号</label>
         <div class="layui-input-block">
             <c:if test="${method=='add'}">
                 <select name="payerId" lay-verify="required" lay-search>
+                    <option value="">---请选择---</option>
                     <c:forEach items="${users}" var="user" begin="0" end="${usersSize}" step="1">
                         <option value="${user.id}">${user.name}</option>
                     </c:forEach>

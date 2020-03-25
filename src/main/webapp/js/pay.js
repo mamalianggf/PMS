@@ -27,6 +27,8 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
         }
         , title: '缴费表'
         , page: true //开启分页
+        , limit: 5
+        , limits: [5, 10, 15, 20, 25, 30, 35, 40, 45]
         , toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}

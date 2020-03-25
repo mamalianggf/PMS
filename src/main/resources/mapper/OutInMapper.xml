@@ -59,11 +59,13 @@
     <update id="updateOutIn" parameterType="HashMap">
         update outin
         set NAME=#{name},
-            PHONE=#{phone},
+        PHONE=#{phone},
+        <if test="license!=null and license!=''">
             LICENSE=#{license},
-            START_TIME = #{startTime},
-            END_TIME=#{endTime},
-            TYPE=#{type}
+        </if>
+        START_TIME = #{startTime},
+        END_TIME=#{endTime},
+        TYPE=#{type}
         where ID = #{id}
     </update>
 

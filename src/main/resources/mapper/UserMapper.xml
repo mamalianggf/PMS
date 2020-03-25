@@ -31,6 +31,9 @@
         <if test="roleId!=null and roleId!=''">
             AND c.ID = #{roleId}
         </if>
+        <if test="roleIds!=null and roleIds!=''">
+            AND c.ID in (${roleIds})
+        </if>
     </select>
 
     <select id="listUser" parameterType="HashMap" resultType="HashMap">
@@ -56,6 +59,9 @@
         </if>
         <if test="roleId!=null and roleId!=''">
             AND c.ID = #{roleId}
+        </if>
+        <if test="roleIds!=null and roleIds!=''">
+            AND c.ID in (${roleIds})
         </if>
         order by a.ID
         <if test="start!=null and start!='' and limit!=null and limit!=''">

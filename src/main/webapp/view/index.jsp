@@ -100,9 +100,9 @@
                 </c:if>
                 <c:if test="${sessionScope.role.id=='4'}">
                     <li class="layui-nav-item">
-                        <a href="javascript:;">用户管理</a>
+                        <a href="javascript:;">系统管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="/PMS/people" target="iframeName">用户查询</a></dd>
+                            <dd><a href="/PMS/people" target="iframeName">系统用户查询</a></dd>
                         </dl>
                     </li>
                 </c:if>

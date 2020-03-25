@@ -31,7 +31,7 @@ public class UserController {
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST)
     @ResponseBody
-    public EiInfo submit(HttpServletRequest request, User user) throws Exception {
+    public EiInfo submit(HttpServletRequest request, User user, String roleId) throws Exception {
         User authentication = userService.authentication(user.getName());
         EiInfo eiInfo = new EiInfo();
         if (authentication != null) {
@@ -42,7 +42,11 @@ public class UserController {
         user.setCreateTime(DateUtil.now());
         userService.insertUser(user);
         //默认为业主
-        userService.insertUser_role(String.valueOf(userService.authentication(user.getName()).getId()), String.valueOf(RoleConstant.ROLE_OWNER));
+        if (StringUtils.isEmpty(roleId)) {
+            userService.insertUser_role(String.valueOf(userService.authentication(user.getName()).getId()), String.valueOf(RoleConstant.ROLE_OWNER));
+        } else {
+            userService.insertUser_role(String.valueOf(userService.authentication(user.getName()).getId()), roleId);
+        }
         eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
         eiInfo.setMessage("新增成功");
         return eiInfo;
@@ -50,16 +54,17 @@ public class UserController {
 
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
-    public EiInfo select(String page, String limit, String id, String name, String rname, String roleId) throws Exception {
+    public EiInfo select(String page, String limit, String id, String name, String rname, String roleId,String roleIds) throws Exception {
         HashMap map = new HashMap();
         if (!StringUtils.isEmpty(page) && !StringUtils.isEmpty(limit)) {
-            map.put("start", (Integer.valueOf(page) - 1) * Integer.valueOf(limit));
+            map.put("start", String.valueOf((Integer.valueOf(page) - 1) * Integer.valueOf(limit)));
             map.put("limit", limit);
         }
         map.put("id", id);
         map.put("name", name);
         map.put("rname", rname);
         map.put("roleId", roleId);
+        map.put("roleIds", roleIds);
         List<HashMap> users = userService.listUser(map);
         EiInfo eiInfo = new EiInfo();
         eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
@@ -88,10 +93,12 @@ public class UserController {
             eiInfo.setStatus(HttpConstant.HTTP_CODE_200);
             eiInfo.setMessage("重置成功");
         }
-        /*HashMap param = new HashMap();
-        param.put("userId", id);
-        param.put("roleId", roleId);
-        userService.updateUser_role(param);*/
+        if (!StringUtils.isEmpty(roleId)) {
+            HashMap param = new HashMap();
+            param.put("userId", id);
+            param.put("roleId", roleId);
+            userService.updateUser_role(param);
+        }
         return eiInfo;
     }
 
