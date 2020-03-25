@@ -65,7 +65,7 @@
                     <dl class="layui-nav-child">
                         <dd><a href="/PMS/user" target="iframeName">住户信息查询</a></dd>
                         <dd><a href="/PMS/decoration" target="iframeName">装修登记查询</a></dd>
-                        <dd><a href="javascript:;">车辆车位登记</a></dd>
+                        <dd><a href="/PMS/car" target="iframeName">车辆车位登记</a></dd>
                     </dl>
                 </li>
                 </c:if>
@@ -98,7 +98,14 @@
                         </dl>
                     </li>
                 </c:if>
-
+                <c:if test="${sessionScope.role.id=='4'}">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">用户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/PMS/people" target="iframeName">用户查询</a></dd>
+                        </dl>
+                    </li>
+                </c:if>
             </ul>
         </div>
     </div>

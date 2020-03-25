@@ -33,6 +33,8 @@ public class IndexController {
     private DecorationService decorationService;
     @Autowired
     private OutInService outInService;
+    @Autowired
+    private CarService carService;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(HttpServletRequest request) {
@@ -194,6 +196,39 @@ public class IndexController {
     public ModelAndView pwd() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("pwd");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "car", method = RequestMethod.GET)
+    public ModelAndView car() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("car");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/car/submit", method = RequestMethod.GET)
+    public ModelAndView carSubmit(String method, String id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("carSubmit");
+        modelAndView.addObject("method", method);
+        if ("add".equals(method)) {
+            List<HashMap> users = userService.listUser(new HashMap());
+            modelAndView.addObject("users", users);
+            modelAndView.addObject("usersSize", users.size());
+        }
+        if ("update".equals(method) && !StringUtils.isEmpty(id)) {
+            HashMap map = new HashMap();
+            map.put("id", id);
+            modelAndView.addObject("car", carService.listCar(map).get(0));
+        }
+        return modelAndView;
+    }
+
+
+    @RequestMapping(value = "people", method = RequestMethod.GET)
+    public ModelAndView people() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("user");
         return modelAndView;
     }
 }

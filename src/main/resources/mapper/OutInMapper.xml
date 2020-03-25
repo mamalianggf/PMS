@@ -5,17 +5,23 @@
 
 
     <insert id="insertOutIn" parameterType="OutIn">
-        insert into outin (name, phone, license, start_time, end_time, type)
-        values (#{name}, #{phone}, #{license}, #{startTime}, #{endTime}, #{type})
+        <if test="type==0">
+            insert into outin (name, phone, start_time, type)
+            values (#{name}, #{phone}, #{startTime}, #{type})
+        </if>
+        <if test="type==1">
+            insert into outin (name, phone, license, start_time, type)
+            values (#{name}, #{phone}, #{license}, #{startTime}, #{type})
+        </if>
     </insert>
 
     <select id="count" resultType="int">
-        select count(1) from outin
+        select count(1) from outin where 1=1
         <if test="startTime!=null and startTime!=''">
-            AND start_time = #{startTime}
+            AND start_time &gt;= #{startTime}
         </if>
         <if test="endTime!=null and endTime!=''">
-            AND end_time = #{endTime}
+            AND end_time &lt;= #{endTime}
         </if>
         <if test="type!=null and type!=''">
             AND type = #{type}
@@ -36,10 +42,10 @@
             AND ID =#{id}
         </if>
         <if test="startTime!=null and startTime!=''">
-            AND start_time = #{startTime}
+            AND start_time &gt;= #{startTime}
         </if>
         <if test="endTime!=null and endTime!=''">
-            AND end_time = #{endTime}
+            AND end_time &lt;= #{endTime}
         </if>
         <if test="type!=null and type!=''">
             AND type = #{type}
@@ -52,7 +58,12 @@
 
     <update id="updateOutIn" parameterType="HashMap">
         update outin
-        set NAME=#{name},PHONE=#{phone},LICENSE=#{license}, START_TIME = #{startTime},END_TIME=#{endTime},TYPE=#{type}
+        set NAME=#{name},
+            PHONE=#{phone},
+            LICENSE=#{license},
+            START_TIME = #{startTime},
+            END_TIME=#{endTime},
+            TYPE=#{type}
         where ID = #{id}
     </update>
 

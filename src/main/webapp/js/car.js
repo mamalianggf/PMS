@@ -2,26 +2,18 @@ layui.config({
     version: '1583393622887' //为了更新 js 缓存，可忽略
 });
 
-layui.use(['laypage', 'layer', 'table', 'jquery', 'form','laydate'], function () {
+layui.use(['laypage', 'layer', 'table', 'jquery', 'form'], function () {
     let laypage = layui.laypage //分页
         , layer = layui.layer //弹层
         , table = layui.table //表格
         , form = layui.form //表单
-        , $ = layui.$
-        , laydate = layui.laydate;
-
-    laydate.render({
-        elem: '#time'
-        ,type: 'datetime'
-        , trigger: 'click'
-        ,range: true
-    });
+        , $ = layui.$;
 
     //执行一个 table 实例
-    let outInTable = table.render({
-        elem: '#outIn'
+    let carTable = table.render({
+        elem: '#car'
         , method: "POST"
-        , url: '/PMS/outIn/select' //数据接口
+        , url: '/PMS/car/select' //数据接口
         , parseData: function (res) { //res 即为原始返回的数据
             if ("200" == res.status) {
                 res.status = 0;
@@ -33,7 +25,7 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form','laydate'], function ()
                 "data": res.data //解析数据列表
             };
         }
-        , title: '出入表'
+        , title: '车辆车位表'
         , page: true //开启分页
         , limit: 5
         , limits: [5, 10, 15, 20, 25, 30, 35, 40, 45]
@@ -41,12 +33,10 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form','laydate'], function ()
         , cols: [[ //表头
             {type: 'checkbox', fixed: 'left'}
             , {field: 'id', title: 'ID', fixed: 'left'}
-            , {field: 'name', title: '姓名'}
-            , {field: 'phone', title: '电话'}
+            , {field: 'stall', title: '车位'}
             , {field: 'license', title: '车牌'}
-            , {field: 'startTime', title: '进入时间'}
-            , {field: 'endTime', title: '出去时间', templet: '#titleTpl1'}
-            , {field: 'type', title: '方式', templet: '#titleTpl'}
+            , {field: 'details', title: '详情'}
+            , {field: 'userName', title: '用户姓名'}
             , {fixed: 'right', align: 'center', toolbar: '#barDemo'}
         ]]
     });
@@ -60,9 +50,9 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form','laydate'], function ()
                 layer.open({
                     type: 2,
                     area: ['500px', '500px'],
-                    content: ['/PMS/outIn/submit?method=add'],
+                    content: ['/PMS/car/submit?method=add'],
                     end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
-                        outInTable.reload({});
+                        carTable.reload({});
                     }
                 });
                 break;
@@ -75,14 +65,14 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form','laydate'], function ()
                         arr.push(data[i].id);
                     }
                     $.ajax({
-                        url: "/PMS/outIn/delete",
+                        url: "/PMS/car/delete",
                         type: "POST",
                         data: {
-                            outInIds: arr
+                            carIds: arr
                         },
                         success: function (data) {
                             layer.msg(data.message);
-                            outInTable.reload({});
+                            carTable.reload({});
                         }
                     });
                 }
@@ -104,14 +94,14 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form','laydate'], function ()
                 //向服务端发送删除指令
                 let arr = [obj.data.id];
                 $.ajax({
-                    url: "/PMS/outIn/delete",
+                    url: "/PMS/car/delete",
                     type: "POST",
                     data: {
-                        outInIds: arr
+                        carIds: arr
                     },
                     success: function (data) {
                         layer.msg(data.message);
-                        outInTable.reload({});
+                        carTable.reload({});
                     }
                 });
             });
@@ -120,9 +110,9 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form','laydate'], function ()
             layer.open({
                 type: 2,
                 area: ['500px', '500px'],
-                content: ['/PMS/outIn/submit?method=update&id=' + id],
+                content: ['/PMS/car/submit?method=update&id=' + id],
                 end: function () {//无论是确认还是取消，只要层被销毁了，end都会执行，不携带任何参数。layer.open关闭事件
-                    outInTable.reload({});
+                    carTable.reload({});
                 }
             });
         }
@@ -141,17 +131,16 @@ layui.use(['laypage', 'layer', 'table', 'jquery', 'form','laydate'], function ()
         }
     });
 
-    form.on('submit(outInSearch)', function (data) {
+    form.on('submit(carSearch)', function (data) {
         let formData = data.field;
-        let time = formData.time,
-            type = formData.type;
-        let startTime = time.split(" - ")[0];
-        let endTime = time.split(" - ")[1];
-        outInTable.reload({
+        let stall = formData.stall,
+            license = formData.license,
+            userName = formData.userName;
+        carTable.reload({
             where: {
-                endTime: endTime,
-                startTime: startTime,
-                type: type
+                stall: stall,
+                license: license,
+                userName: userName
             }
         });
         return false;

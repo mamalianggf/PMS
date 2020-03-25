@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pms.mapper.CarMapper">
+
+
+    <insert id="insertCar" parameterType="Car">
+        insert into car (user_id, stall, license, details)
+        values (#{userId}, #{stall}, #{license}, #{details})
+    </insert>
+
+    <select id="count" resultType="int">
+        select count(1) from car a,user b
+        where a.USER_ID = b.ID
+        <if test="license!=null and license!=''">
+            AND a.license like '%${license}%'
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND b.NAME = #{userName}
+        </if>
+    </select>
+
+    <select id="listCar" parameterType="HashMap" resultType="HashMap">
+        select a.id as id,
+        a.USER_ID as userId,
+        a.STALL as stall,
+        a.LICENSE as license,
+        a.DETAILS as details,
+        b.name as userName
+        from car a,user b
+        where a.USER_ID = b.ID
+        <if test="id!=null and id!=''">
+            AND a.ID =#{id}
+        </if>
+        <if test="license!=null and license!=''">
+            AND a.license like '%${license}%'
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND b.NAME = #{userName}
+        </if>
+        order by a.USER_ID desc
+        <if test="start!=null and start!='' and limit!=null and limit!=''">
+            limit ${start},${limit}
+        </if>
+    </select>
+
+    <update id="updateCar" parameterType="HashMap">
+        update car
+        set STALL = #{stall},LICENSE = #{license},DETAILS = #{details}
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteCar" parameterType="String">
+        delete from car
+        WHERE ID in
+        <foreach collection="array" index="index" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

@@ -8,35 +8,28 @@
     <title>PMS</title>
     <!-- 该资源在IDE环境中无法找到，是因为视图解析器的原因 -->
     <link rel="stylesheet" href="<%=basePath%>layui/css/layui.css" media="all">
-    <link rel="stylesheet" href="<%=basePath%>css/outIn.css" media="all">
 </head>
 <body>
-<div id="container">
+<div id="container" style=" width: 95%;height: 100%;padding: 30px;">
     <div class="layui-row">
         <form class="layui-form layui-col-md12">
-            &nbsp;时间范围:
+            &nbsp;车牌:
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" name="time"  id="time">
+                <input type="text" name="license"
+                       placeholder="请输入车牌" autocomplete="off" class="layui-input">
             </div>
-            <%--&nbsp;&nbsp;出去时间:
+            &nbsp;&nbsp;用户账号:
             <div class="layui-input-inline">
-                <input type="text" class="layui-input" name="endTime"  id="endTime">
-            </div>--%>
-            &nbsp;方式:
-            <div class="layui-input-inline">
-                <select name="type">
-                    <option value="">请选择</option>
-                    <option value="0">人员</option>
-                    <option value="1">车辆</option>
-                </select>
+                <input type="text" name="userName"
+                       placeholder="请输入用户账号" autocomplete="off" class="layui-input">
             </div>
             &nbsp;
-            <button class="layui-btn" lay-submit lay-filter="outInSearch">
+            <button class="layui-btn" lay-submit lay-filter="carSearch">
                 <i class="layui-icon">&#xe615;</i>
             </button>
         </form>
     </div>
-    <table class="layui-hide" id="outIn" lay-filter="test"></table>
+    <table class="layui-hide" id="car" lay-filter="test"></table>
 
     <script type="text/html" id="toolbarDemo">
         <div class="layui-btn-container">
@@ -51,19 +44,13 @@
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
 
-    <script type="text/html" id="titleTpl1">
-        {{#  if(d.endTime == ''){ }}
-        暂未离开
-        {{#  } else{ }}
-        {{d.endTime}}
-        {{#  } }}
-    </script>
-
     <script type="text/html" id="titleTpl">
-        {{#  if(d.type == 0){ }}
-        行人
+        {{#  if(d.status == 0){ }}
+        未处理
+        {{#  } else if(d.status == 1) { }}
+        处理中
         {{#  } else{ }}
-        车辆
+        已处理
         {{#  } }}
     </script>
 
@@ -75,7 +62,7 @@
         </div>
     </div>
     <script src="<%=basePath%>layui/layui.js"></script>
-    <script src="<%=basePath%>js/outIn.js"></script>
+    <script src="<%=basePath%>js/car.js"></script>
 </div>
 </body>
 
